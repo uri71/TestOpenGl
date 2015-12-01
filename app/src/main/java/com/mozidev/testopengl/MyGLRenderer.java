@@ -212,9 +212,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void resetObject(Base3DObject object){
-        if(object != null){m3DObject = object;
-        createFigure();}
-
+    public void resetObject(Base3DObject object) {
+        if (object != null) {
+            m3DObject = object;
+            createFigure();
+        }
     }
 }

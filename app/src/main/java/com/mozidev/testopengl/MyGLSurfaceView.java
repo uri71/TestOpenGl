@@ -53,7 +53,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
 
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
+    //private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
     private float mPreviousX;
     private float mPreviousY;
 
@@ -101,8 +101,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
         Float[] nearbyPoint;
 
         for (Float[] vertex : mObjects.vertex) {
-            double hypot = Math.hypot(vertex[0] - dx, vertex[1] = dy);
+            double hypot = Math.hypot(vertex[0] - dx, vertex[1] - dy);
             Log.d(TAG, "hypot = " + hypot + "distance = " + DISTANCE);
+
             if (hypot < DISTANCE) {
                 if (minHypot == 0) {
                     minHypot = hypot;
@@ -115,5 +116,4 @@ public class MyGLSurfaceView extends GLSurfaceView {
             }
         }
     }
-
 }

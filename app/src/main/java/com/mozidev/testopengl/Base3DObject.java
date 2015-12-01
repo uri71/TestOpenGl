@@ -17,8 +17,8 @@ public class Base3DObject {
     List<float[]> texture;
     List<float[]> norm;
     List<Figure> face;
+    List<String> order;
     String comment;
-    private String order;
 
 
     public Base3DObject() {
@@ -60,7 +60,6 @@ public class Base3DObject {
 
 
     public void addF(String line) {
-        order = line;
         String[] group = line.split(" ");
         Figure f = new Figure();
         for (int i = 1; i < group.length; i++) {
@@ -80,11 +79,16 @@ public class Base3DObject {
 
 
     public void reset(){
-        if(!TextUtils.isEmpty(order)){
+        /*if(!TextUtils.isEmpty(order)){
             face.clear();
-            addF(order);
-        }
+            //addF(order);
+        }*/
     }
+
+   public void setOrder(String line){
+       if(order == null) order = new ArrayList<>();
+       order.add(line);
+   }
 
 
     public void addComment(String line) {

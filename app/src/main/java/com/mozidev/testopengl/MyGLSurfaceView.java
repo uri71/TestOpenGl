@@ -110,8 +110,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
         res_y = getHeight();
 
         DISTANCE = /*ScreenUtils.dpToPx(48) */(isMoving ? areaMoving : areaTouch) / res_x;
-        float x = e.getX();
-        float y = e.getY();
+        final float x = e.getX();
+        final float y = e.getY();
         boolean selected = checkTouchEvent(x, y);
         Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
         //Log.d(TAG, "Checked point: " + Arrays.toString(checkedPoint));
@@ -131,6 +131,31 @@ public class MyGLSurfaceView extends GLSurfaceView {
         });*/
 
         switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if(isMoving && !selected){
+                    queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+isMoving = false;
+                            mRenderer.setMarker(false);
+                            requestRender();
+                        }
+                    });
+                    return true;
+                }
+            if (selected) {
+                isMoving = true;
+                queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+
+                            mRenderer.setMarker(true);
+                            requestRender();
+                    }
+                });
+
+            }
+            break;
             case MotionEvent.ACTION_MOVE:
                 if (isMoving) {
                     if (time == 0) {
@@ -141,7 +166,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                             @Override
                             public void run() {
                                 //Base3DObject copy = new Base3DObject(mObjects);
-                                mRenderer.resetObject(mObjects.clone());
+                                mRenderer.resetObject(mObjects);
                                 requestRender();
                             }
                         });
@@ -149,22 +174,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 }
                 break;
 
-            case MotionEvent.ACTION_DOWN:
-                if (selected && !isMoving) {
-                    isMoving = true;
-                    queueEvent(new Runnable() {
-                        @Override
-                        public void run() {
-                           // Base3DObject copy = new Base3DObject(mObjects);
-                            /*mRenderer.resetObject(mObjects.clone());
-                            requestRender();*/
-                        }
-                    });
 
-                } else if (!selected) {
-                    isMoving = false;
-                }
-                break;
         }
 
         return true;
@@ -235,7 +245,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 mObjects.setSelectedId(idMin);
                 mObjects.recalculateFigure();
                 Log.d(TAG, "checkTouchEvent idMin = " + idMin + " newVertex = " + Arrays.toString(mObjects.vertex.get(idMin)));
-            }
+            } else mObjects.clearSelected();
         }
         return idMin >= 0;
     }

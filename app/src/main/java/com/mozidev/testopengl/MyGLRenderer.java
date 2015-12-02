@@ -194,17 +194,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    synchronized public void createFigure() {
-        if(m3DObject == null) {
-            Log.e(TAG, "m3DObject == null");
-            return;
-        }
+     public void createFigure() {
+         if(m3DObject == null) {
+         Log.e(TAG, "m3DObject == null");
+         return;
+     }
+         final List<Figure> list  = m3DObject.face;
+
         if(mSquare != null) mSquare.clear();
         else mSquare = new ArrayList<>();
 
 
        // try {
-            for(Figure f: m3DObject.face){
+            for(Figure f: list){
                 float[] vertex = new float[f.vertex.size()];
                 for(int i = 0; i < vertex.length - 1; i++){
                     vertex[i] = f.vertex.get(i);
@@ -227,23 +229,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void resetObject(Base3DObject object) {
+    public void resetObject(final Base3DObject object) {
         Log.d(TAG, "resetObject");
         if (object != null) {
-            m3DObject = object;
+            m3DObject = new Base3DObject(object);
             createFigure();
             createMarkers();
         }
     }
 
 
-    public void test(Float[] point){
-        if(mMarker != null) mMarker.clear();
-        else mMarker = new ArrayList<>();
-        Marker marker = new Marker(point, true);
-        mMarker.add(marker);
 
-    }
 
 
     private void createMarkers() {
@@ -260,6 +256,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 marker = new Marker(f, true);
            } else  marker = new Marker(f, false);
             mMarker.add(marker);
+        }
+    }
+
+
+    public void setSelected(Base3DObject mObjects) {
+
+    }
+
+
+    public void setMarker(boolean selected) {
+        if(selected && m3DObject.getSelectedId()<0)return;
+        /*if(mMarker != null) mMarker.clear();
+        else mMarker = new ArrayList<>();*/
+if(selected){
+        Marker marker = new Marker(m3DObject.vertex.get(m3DObject.getSelectedId()), true);
+        mMarker.add(marker);}
+        else {
+    createMarkers();
         }
     }
 }

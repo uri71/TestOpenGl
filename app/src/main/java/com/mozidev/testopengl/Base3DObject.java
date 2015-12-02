@@ -23,13 +23,14 @@ public class Base3DObject implements Cloneable {
 
     public Base3DObject(final Base3DObject object) {
 
-        face = object.face;
+
         vertex = object.vertex;
         norm = object.norm;
         comment = object.comment;
         texture = object.texture;
         order = object.order;
         selectedId = object.selectedId;
+        recalculateFigure();
     }
 
 

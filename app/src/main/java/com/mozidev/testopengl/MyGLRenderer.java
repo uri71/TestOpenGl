@@ -49,12 +49,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private float mAngle;
     private Base3DObject m3DObject;
-    private int count = 0;
-    static float test[] = {
-            -0.5f,  0.5f, 0.0f,   // top left
-            -0.5f, -0.5f, 0.0f,   // bottom left
-            0.5f, -0.5f, 0.0f,   // bottom right
-            0.5f,  0.5f, 0.0f };
+
 
 
     @Override
@@ -70,7 +65,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        count++;
+        Log.d(TAG, "onDrawFrame");
         float[] scratch = new float[16];
 
         // Draw background color
@@ -213,6 +208,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     public void resetObject(Base3DObject object) {
+        Log.d(TAG, "resetObject");
         if (object != null) {
             m3DObject = object;
             createFigure();

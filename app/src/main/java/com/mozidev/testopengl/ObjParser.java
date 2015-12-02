@@ -45,6 +45,7 @@ public class ObjParser {
                 } else if(line.contains("vn ")){
                     object.addVn(line);
                 } else if(line.contains("f ")){
+                    object.setOrder(line);
                     object.addF(line);
                 }
                 Log.d(TAG, line);

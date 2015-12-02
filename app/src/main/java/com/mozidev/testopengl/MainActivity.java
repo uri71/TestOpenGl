@@ -16,8 +16,11 @@
 package com.mozidev.testopengl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+
+import com.mozidev.testopengl.service.DownloadService;
 
 public class MainActivity extends Activity {
 
@@ -56,5 +59,8 @@ public class MainActivity extends Activity {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         mGLView.onResume();
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("url", "http://www.ex.ua/get/210726622");
+        startService(intent);
     }
 }

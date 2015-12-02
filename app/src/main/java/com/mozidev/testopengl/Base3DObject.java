@@ -79,10 +79,11 @@ public class Base3DObject {
 
 
     public void reset(){
-        /*if(!TextUtils.isEmpty(order)){
-            face.clear();
-            //addF(order);
-        }*/
+        if(face != null) face.clear();
+        else face = new ArrayList<>();
+        for (String line: order){
+            addF(line);
+        }
     }
 
    public void setOrder(String line){

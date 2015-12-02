@@ -1,6 +1,5 @@
 package com.mozidev.testopengl;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Created by y.storchak on 30.11.15.
  */
-public class Base3DObject {
+public class Base3DObject implements Cloneable {
 
     private static final String TAG = "Base3DObject";
     List<Float[]> vertex;
@@ -19,6 +18,34 @@ public class Base3DObject {
     List<Figure> face;
     List<String> order;
     String comment;
+    int selectedId = -1;
+
+
+    public Base3DObject(final Base3DObject object) {
+
+        face = object.face;
+        vertex = object.vertex;
+        norm = object.norm;
+        comment = object.comment;
+        texture = object.texture;
+        order = object.order;
+        selectedId = object.selectedId;
+    }
+
+
+    public int getSelectedId() {
+        return selectedId;
+    }
+
+
+    public void setSelectedId(int selectedId) {
+        this.selectedId = selectedId;
+    }
+
+
+    public void clearSelected() {
+        selectedId = -1;
+    }
 
 
     public Base3DObject() {
@@ -78,21 +105,35 @@ public class Base3DObject {
     }
 
 
-    public void reset(){
-        if(face != null) face.clear();
+    public void recalculateFigure() {
+        if (face != null) face.clear();
         else face = new ArrayList<>();
-        for (String line: order){
+        for (String line : order) {
             addF(line);
         }
     }
 
-   public void setOrder(String line){
-       if(order == null) order = new ArrayList<>();
-       order.add(line);
-   }
+
+    public void setOrder(String line) {
+        if (order == null) order = new ArrayList<>();
+        order.add(line);
+    }
 
 
     public void addComment(String line) {
         this.comment = line;
+    }
+
+
+    @Override
+    public Base3DObject clone() {
+        try {
+            final Base3DObject result = (Base3DObject) super.clone();
+            // copy fields that need to be copied here!
+            return result;
+        }
+        catch (final CloneNotSupportedException ex) {
+            throw new AssertionError();
+        }
     }
 }

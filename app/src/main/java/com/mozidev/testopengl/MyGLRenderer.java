@@ -40,6 +40,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRenderer";
     //private Triangle mTriangle;
     private List<Square> mSquare;
+    private List<Marker> mMarker;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -48,7 +49,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mRotationMatrix = new float[16];
 
     private float mAngle;
-    private Base3DObject m3DObject;
+     private Base3DObject m3DObject;
 
 
 
@@ -61,6 +62,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
        // mTriangle = new Triangle();
        // if(mSquare == null)mSquare   = new ArrayList<>();
         createFigure();
+        createMarkers();
     }
 
     @Override
@@ -84,6 +86,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             for (Square square : mSquare) {
                 if (square != null) {
                     square.draw(mMVPMatrix);
+                }
+            }
+        }
+
+        if (mMarker != null) {
+           // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
+            for (Marker marker : mMarker) {
+                if (marker != null) {
+                    marker.draw(mMVPMatrix);
                 }
             }
         }
@@ -183,7 +194,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void createFigure() {
+    synchronized public void createFigure() {
         if(m3DObject == null) {
             Log.e(TAG, "m3DObject == null");
             return;
@@ -191,13 +202,22 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if(mSquare != null) mSquare.clear();
         else mSquare = new ArrayList<>();
 
-        for(Figure f: m3DObject.face){
-            float[] vertex = new float[f.vertex.size()];
-            for(int i = 0; i < vertex.length - 1; i++){
-                vertex[i] = f.vertex.get(i);
+
+       // try {
+            for(Figure f: m3DObject.face){
+                float[] vertex = new float[f.vertex.size()];
+                for(int i = 0; i < vertex.length - 1; i++){
+                    vertex[i] = f.vertex.get(i);
+                }
+
+                mSquare.add(new Square(vertex));
             }
-            mSquare.add(new Square(vertex));
-        }
+        /*}
+        catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+
     }
 
 
@@ -212,6 +232,34 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if (object != null) {
             m3DObject = object;
             createFigure();
+            createMarkers();
+        }
+    }
+
+
+    public void test(Float[] point){
+        if(mMarker != null) mMarker.clear();
+        else mMarker = new ArrayList<>();
+        Marker marker = new Marker(point, true);
+        mMarker.add(marker);
+
+    }
+
+
+    private void createMarkers() {
+        if(m3DObject == null) {
+            Log.e(TAG, "m3DObject == null");
+            return;
+        }
+        if(mMarker != null) mMarker.clear();
+        else mMarker = new ArrayList<>();
+
+        for(Float[] f: m3DObject.vertex){
+            Marker marker;
+           if(m3DObject.selectedId >=0 && m3DObject.vertex.indexOf(f) == m3DObject.selectedId) {
+                marker = new Marker(f, true);
+           } else  marker = new Marker(f, false);
+            mMarker.add(marker);
         }
     }
 }

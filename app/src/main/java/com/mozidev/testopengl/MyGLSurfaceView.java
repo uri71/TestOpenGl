@@ -20,6 +20,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.rits.cloning.Cloner;
+
 import java.util.Arrays;
 
 /**
@@ -38,6 +40,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private boolean isMoving;
     private int areaMoving = 350;
     private int areaTouch = 250;
+    private long time;
+    private long DELAY = 100;
 
 
     public MyGLSurfaceView(Context context, Base3DObject object) {
@@ -111,22 +115,37 @@ public class MyGLSurfaceView extends GLSurfaceView {
         boolean selected = checkTouchEvent(x, y);
         Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
         //Log.d(TAG, "Checked point: " + Arrays.toString(checkedPoint));
+        /*float dx = (x - res_x / 2) / (res_x / 2);
+        float dy = ((res_y / 2) - y) / (res_y / 2);
+        dx = dx * (res_x / res_y);
+        final Float [] test = new Float[]{
+                -dx, dy, 0f
+        };
+        queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                //Base3DObject copy = new Base3DObject(mObjects);
+                mRenderer.test(test);
+                requestRender();
+            }
+        });*/
 
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
-
-
-                final float dx = x - mPreviousX;
-                final float dy = y - mPreviousY;
                 if (isMoving) {
-
-                    queueEvent(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRenderer.resetObject(mObjects);
-                            requestRender();
-                        }
-                    });
+                    if (time == 0) {
+                        time = System.currentTimeMillis();
+                    } else if (System.currentTimeMillis() - time > DELAY) {
+                        time = System.currentTimeMillis();
+                        queueEvent(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Base3DObject copy = new Base3DObject(mObjects);
+                                mRenderer.resetObject(mObjects.clone());
+                                requestRender();
+                            }
+                        });
+                    }
                 }
                 break;
 
@@ -136,19 +155,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     queueEvent(new Runnable() {
                         @Override
                         public void run() {
-                            mRenderer.resetObject(mObjects);
-                            requestRender();
+                           // Base3DObject copy = new Base3DObject(mObjects);
+                            /*mRenderer.resetObject(mObjects.clone());
+                            requestRender();*/
                         }
                     });
 
-                } else if(!selected){
+                } else if (!selected) {
                     isMoving = false;
                 }
                 break;
         }
 
-        mPreviousX = x;
-        mPreviousY = y;
         return true;
     }
 
@@ -182,7 +200,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 
     private boolean checkTouchEvent(float x, float y) {
-        float dx = (x - res_x / 2) / (res_x / 2);
+        float dx = -(x - res_x / 2) / (res_x / 2);
         float dy = ((res_y / 2) - y) / (res_y / 2);
         dx = dx * (res_x / res_y);
         Log.d(TAG, "dx = " + dx + " dy = " + dy);
@@ -214,7 +232,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
                         dx, dy, 0f
                 };
                 mObjects.vertex.set(idMin, newVertex);
-                mObjects.reset();
+                mObjects.setSelectedId(idMin);
+                mObjects.recalculateFigure();
                 Log.d(TAG, "checkTouchEvent idMin = " + idMin + " newVertex = " + Arrays.toString(mObjects.vertex.get(idMin)));
             }
         }

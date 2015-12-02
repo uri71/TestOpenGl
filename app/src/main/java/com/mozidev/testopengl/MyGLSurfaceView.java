@@ -20,8 +20,6 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.rits.cloning.Cloner;
-
 import java.util.Arrays;
 
 /**
@@ -37,7 +35,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private float res_x;
     private float res_y;
     private double DISTANCE;
-    private boolean isMoving;
+    private boolean isSelected;
     private int areaMoving = 350;
     private int areaTouch = 250;
     private long time;
@@ -109,63 +107,51 @@ public class MyGLSurfaceView extends GLSurfaceView {
         res_x = getWidth();
         res_y = getHeight();
 
-        DISTANCE = /*ScreenUtils.dpToPx(48) */(isMoving ? areaMoving : areaTouch) / res_x;
+        DISTANCE = /*ScreenUtils.dpToPx(48) */(isSelected ? areaMoving : areaTouch) / res_x;
         final float x = e.getX();
         final float y = e.getY();
-        boolean selected = checkTouchEvent(x, y);
-        Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
-        //Log.d(TAG, "Checked point: " + Arrays.toString(checkedPoint));
-        /*float dx = (x - res_x / 2) / (res_x / 2);
-        float dy = ((res_y / 2) - y) / (res_y / 2);
-        dx = dx * (res_x / res_y);
-        final Float [] test = new Float[]{
-                -dx, dy, 0f
-        };
-        queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                //Base3DObject copy = new Base3DObject(mObjects);
-                mRenderer.test(test);
-                requestRender();
-            }
-        });*/
+
+       // Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
+
 
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(isMoving && !selected){
+                boolean selected = checkTouchEvent(x, y);
+                if (isSelected && !selected) {
+                    isSelected = false;
                     queueEvent(new Runnable() {
                         @Override
                         public void run() {
-isMoving = false;
-                            mRenderer.setMarker(false);
+                            Log.d(TAG, "MotionEvent.ACTION_DOWN hide marker");
+                            mRenderer.setLine(false, 0);
                             requestRender();
                         }
                     });
                     return true;
                 }
-            if (selected) {
-                isMoving = true;
-                queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-
-                            mRenderer.setMarker(true);
+                if (!isSelected && selected) {
+                    isSelected = true;
+                    queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "MotionEvent.ACTION_DOWN show marker");
+                            mRenderer.setLine(true, mObjects.selectedId);
                             requestRender();
-                    }
-                });
-
-            }
-            break;
+                        }
+                    });
+                    return true;
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
-                if (isMoving) {
+                if (isSelected) {
                     if (time == 0) {
                         time = System.currentTimeMillis();
                     } else if (System.currentTimeMillis() - time > DELAY) {
                         time = System.currentTimeMillis();
+                        Log.d(TAG, "MotionEvent.ACTION_MOVE movie objects");
                         queueEvent(new Runnable() {
                             @Override
                             public void run() {
-                                //Base3DObject copy = new Base3DObject(mObjects);
                                 mRenderer.resetObject(mObjects);
                                 requestRender();
                             }
@@ -173,40 +159,10 @@ isMoving = false;
                     }
                 }
                 break;
-
-
         }
 
         return true;
     }
-
-
-
-
-   /* private void checkTouchEvent(float x, float y) {
-        float dx = (x - res_x / 2) / (res_x / 2);
-        float dy = ((res_y / 2) - y) / (res_y / 2);
-        dx = dx * (res_x / res_y);
-        Log.d(TAG, "dx = " + dx + " dy = " + dy);
-        double minHypot = 0;
-        Float[] nearbyPoint;
-
-        for (Float[] vertex : mObjects.vertex) {
-            double hypot = Math.hypot(vertex[0] - dx, vertex[1] - dy);
-            Log.d(TAG, "hypot = " + hypot + "distance = " + DISTANCE);
-
-            if (hypot < DISTANCE) {
-                if (minHypot == 0) {
-                    minHypot = hypot;
-                    nearbyPoint = vertex;
-                } else if (minHypot > hypot) {
-                    minHypot = hypot;
-                    nearbyPoint = vertex;
-                }
-                Log.d(TAG, "MIN = " + minHypot);
-            }
-        }
-    }*/
 
 
     private boolean checkTouchEvent(float x, float y) {
@@ -227,25 +183,31 @@ isMoving = false;
                     minHypot = hypot;
                     nearbyPoint = vertex;
                     idMin = mObjects.vertex.indexOf(vertex);
-                    Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
+                   // Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                 } else if (minHypot > hypot) {
                     minHypot = hypot;
                     nearbyPoint = vertex;
                     idMin = mObjects.vertex.indexOf(vertex);
-                    Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
+                    //Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                 }
 
-                Log.d(TAG, "MIN = " + minHypot);
+                //Log.d(TAG, "MIN = " + minHypot);
             }
-            if (idMin >= 0) {
-                Float[] newVertex = new Float[] {
-                        dx, dy, 0f
-                };
+
+        }
+        if (idMin >= 0) {
+            Float[] newVertex = new Float[] {
+                    dx, dy, 0f
+            };
+
+            if (isSelected) {
                 mObjects.vertex.set(idMin, newVertex);
-                mObjects.setSelectedId(idMin);
                 mObjects.recalculateFigure();
-                Log.d(TAG, "checkTouchEvent idMin = " + idMin + " newVertex = " + Arrays.toString(mObjects.vertex.get(idMin)));
-            } else mObjects.clearSelected();
+            } else  mObjects.setSelectedId(idMin);
+            Log.d(TAG, "checkTouchEvent idMin = " + idMin);
+        } else {
+            mObjects.clearSelected();
+            Log.d(TAG, "checkTouchEvent clearSelected");
         }
         return idMin >= 0;
     }

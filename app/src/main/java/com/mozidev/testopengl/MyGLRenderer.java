@@ -30,9 +30,9 @@ import javax.microedition.khronos.opengles.GL10;
  * Provides drawing instructions for a GLSurfaceView object. This class
  * must override the OpenGL ES drawing lifecycle methods:
  * <ul>
- *   <li>{@link GLSurfaceView.Renderer#onSurfaceCreated}</li>
- *   <li>{@link GLSurfaceView.Renderer#onDrawFrame}</li>
- *   <li>{@link GLSurfaceView.Renderer#onSurfaceChanged}</li>
+ * <li>{@link GLSurfaceView.Renderer#onSurfaceCreated}</li>
+ * <li>{@link GLSurfaceView.Renderer#onDrawFrame}</li>
+ * <li>{@link GLSurfaceView.Renderer#onSurfaceChanged}</li>
  * </ul>
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
@@ -49,8 +49,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mRotationMatrix = new float[16];
 
     private float mAngle;
-     private Base3DObject m3DObject;
-
+    private Base3DObject m3DObject;
+    private Line mLines;
+    private float ratio;
 
 
     @Override
@@ -59,11 +60,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-       // mTriangle = new Triangle();
-       // if(mSquare == null)mSquare   = new ArrayList<>();
+        // mTriangle = new Triangle();
+        // if(mSquare == null)mSquare   = new ArrayList<>();
         createFigure();
         createMarkers();
     }
+
 
     @Override
     public void onDrawFrame(GL10 unused) {
@@ -82,7 +84,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Draw square
         //
         if (mSquare != null) {
-           // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
+            // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
             for (Square square : mSquare) {
                 if (square != null) {
                     square.draw(mMVPMatrix);
@@ -91,13 +93,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
 
         if (mMarker != null) {
-           // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
+            // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
             for (Marker marker : mMarker) {
                 if (marker != null) {
                     marker.draw(mMVPMatrix);
                 }
             }
         }
+
+        if(mLines != null) mLines.draw(mMVPMatrix);
 
         //}
         //mSquare.draw();
@@ -109,16 +113,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // long time = SystemClock.uptimeMillis() % 4000L;
         // float angle = 0.090f * ((int) time);
 
-       // Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
+        // Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-      //  Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        //  Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
         // Draw triangle
-       // mTriangle.draw(scratch);
+        // mTriangle.draw(scratch);
     }
+
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
@@ -126,7 +131,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // such as screen rotation
         GLES20.glViewport(0, 0, width, height);
 
-        float ratio = (float) width / height;
+        ratio = (float) width / height;
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
@@ -134,17 +139,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
+
     /**
      * Utility method for compiling a OpenGL shader.
-     *
+     * <p/>
      * <p><strong>Note:</strong> When developing shaders, use the checkGlError()
      * method to debug shader coding errors.</p>
      *
-     * @param type - Vertex or fragment shader type.
+     * @param type       - Vertex or fragment shader type.
      * @param shaderCode - String containing the shader code.
      * @return - Returns an id for the shader.
      */
-    public static int loadShader(int type, String shaderCode){
+    public static int loadShader(int type, String shaderCode) {
 
         // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
         // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
@@ -157,18 +163,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return shader;
     }
 
+
     /**
-    * Utility method for debugging OpenGL calls. Provide the name of the call
-    * just after making it:
-    *
-    * <pre>
-    * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-    * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-    *
-    * If the operation is not successful, the check throws an error.
-    *
-    * @param glOperation - Name of the OpenGL call to check.
-    */
+     * Utility method for debugging OpenGL calls. Provide the name of the call
+     * just after making it:
+     * <p/>
+     * <pre>
+     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
+     *
+     * If the operation is not successful, the check throws an error.
+     *
+     * @param glOperation - Name of the OpenGL call to check.
+     */
     public static void checkGlError(String glOperation) {
         int error;
         while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
@@ -176,6 +183,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             throw new RuntimeException(glOperation + ": glError " + error);
         }
     }
+
 
     /**
      * Returns the rotation angle of the triangle shape (mTriangle).
@@ -186,6 +194,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return mAngle;
     }
 
+
     /**
      * Sets the rotation angle of the triangle shape (mTriangle).
      */
@@ -194,26 +203,29 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-     public void createFigure() {
-         if(m3DObject == null) {
-         Log.e(TAG, "m3DObject == null");
-         return;
-     }
-         final List<Figure> list  = m3DObject.face;
+    public void createFigure() {
+        if (m3DObject == null) {
+            Log.e(TAG, "m3DObject == null");
+            return;
+        }
+        final List<Figure> list = m3DObject.face;
 
-        if(mSquare != null) mSquare.clear();
-        else mSquare = new ArrayList<>();
+        if (mSquare != null) {
+            mSquare.clear();
+        } else {
+            mSquare = new ArrayList<>();
+        }
 
 
-       // try {
-            for(Figure f: list){
-                float[] vertex = new float[f.vertex.size()];
-                for(int i = 0; i < vertex.length - 1; i++){
-                    vertex[i] = f.vertex.get(i);
-                }
-
-                mSquare.add(new Square(vertex));
+        // try {
+        for (Figure f : list) {
+            float[] vertex = new float[f.vertex.size()];
+            for (int i = 0; i < vertex.length - 1; i++) {
+                vertex[i] = f.vertex.get(i);
             }
+
+            mSquare.add(new Square(vertex));
+        }
         /*}
         catch (Exception e) {
             e.printStackTrace();
@@ -223,7 +235,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void setObject(Base3DObject object){
+    public void setObject(Base3DObject object) {
         m3DObject = object;
         //createFigure();
     }
@@ -234,27 +246,30 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if (object != null) {
             m3DObject = new Base3DObject(object);
             createFigure();
-            createMarkers();
+            setLine(true, m3DObject.selectedId);
         }
     }
 
 
-
-
-
     private void createMarkers() {
-        if(m3DObject == null) {
+        if (m3DObject == null) {
             Log.e(TAG, "m3DObject == null");
             return;
         }
-        if(mMarker != null) mMarker.clear();
-        else mMarker = new ArrayList<>();
+        if (mMarker != null) {
+            mMarker.clear();
+        } else {
+            mMarker = new ArrayList<>();
+        }
 
-        for(Float[] f: m3DObject.vertex){
+        for (Float[] f : m3DObject.vertex) {
             Marker marker;
-           if(m3DObject.selectedId >=0 && m3DObject.vertex.indexOf(f) == m3DObject.selectedId) {
+            if (m3DObject.selectedId >= 0
+                    && m3DObject.vertex.indexOf(f) == m3DObject.selectedId) {
                 marker = new Marker(f, true);
-           } else  marker = new Marker(f, false);
+            } else {
+                marker = new Marker(f, false);
+            }
             mMarker.add(marker);
         }
     }
@@ -265,15 +280,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void setMarker(boolean selected) {
-        if(selected && m3DObject.getSelectedId()<0)return;
-        /*if(mMarker != null) mMarker.clear();
-        else mMarker = new ArrayList<>();*/
-if(selected){
-        Marker marker = new Marker(m3DObject.vertex.get(m3DObject.getSelectedId()), true);
-        mMarker.add(marker);}
-        else {
-    createMarkers();
+    public void setLine(boolean selected, int id) {
+        int selectedId = id;
+        Log.d(TAG, "setLine = " + selected + " id = " + selectedId);
+        if (selected && selectedId < 0) {
+            return;
+        }
+        if (selected) {
+            Float[] vertex = m3DObject.vertex.get(selectedId);
+            mLines = new Line(vertex, ratio);
+        } else {
+            mLines = null;
         }
     }
 }

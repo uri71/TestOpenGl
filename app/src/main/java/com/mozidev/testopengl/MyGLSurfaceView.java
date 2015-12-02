@@ -20,6 +20,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.util.Arrays;
+
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
@@ -38,10 +40,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     public MyGLSurfaceView(Context context, Base3DObject object) {
         super(context);
 
-
-        // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
-
         // Set the Renderer for drawing on the GLSurfaceView
         mRenderer = new MyGLRenderer();
         mRenderer.setObject(object);
@@ -52,8 +51,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-
-    //private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
     private float mPreviousX;
     private float mPreviousY;
 
@@ -71,7 +68,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         checkTouchEvent(x, y);
         Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
 
-        /*switch (e.getAction()) {
+        switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
 
                 float dx = x - mPreviousX;
@@ -84,7 +81,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                         requestRender();
                     }
                 });
-        }*/
+        }
 
         mPreviousX = x;
         mPreviousY = y;
@@ -108,9 +105,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 if (minHypot == 0) {
                     minHypot = hypot;
                     nearbyPoint = vertex;
+                    Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                 } else if (minHypot > hypot) {
                     minHypot = hypot;
                     nearbyPoint = vertex;
+                    Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                 }
                 Log.d(TAG, "MIN = " + minHypot);
             }

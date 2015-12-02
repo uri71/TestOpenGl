@@ -38,23 +38,14 @@ import javax.microedition.khronos.opengles.GL10;
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
-    //private Triangle mTriangle;
-    private List<Square> mSquare;
+    private List<Shape> mShape;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private final float[] mRotationMatrix = new float[16];
 
-    private float mAngle;
     private Base3DObject m3DObject;
-    private int count = 0;
-    static float test[] = {
-            -0.5f,  0.5f, 0.0f,   // top left
-            -0.5f, -0.5f, 0.0f,   // bottom left
-            0.5f, -0.5f, 0.0f,   // bottom right
-            0.5f,  0.5f, 0.0f };
 
 
     @Override
@@ -63,15 +54,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-       // mTriangle = new Triangle();
-       // if(mSquare == null)mSquare   = new ArrayList<>();
         createFigure();
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        count++;
-        float[] scratch = new float[16];
 
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -82,36 +69,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-        // Draw square
-        //
-        if (mSquare != null) {
-           // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
-            for (Square square : mSquare) {
-                if (square != null) {
-                    square.draw(mMVPMatrix);
+        // Draw shape
+        if (mShape != null) {
+            for (Shape shape : mShape) {
+                if (shape != null) {
+                    shape.draw(mMVPMatrix);
                 }
             }
         }
 
-        //}
-        //mSquare.draw();
-
-        // Create a rotation for the triangle
-
-        // Use the following code to generate constant rotation.
-        // Leave this code out when using TouchEvents.
-        // long time = SystemClock.uptimeMillis() % 4000L;
-        // float angle = 0.090f * ((int) time);
-
-       // Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
-
-        // Combine the rotation matrix with the projection and camera view
-        // Note that the mMVPMatrix factor *must be first* in order
-        // for the matrix multiplication product to be correct.
-      //  Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-        // Draw triangle
-       // mTriangle.draw(scratch);
     }
 
     @Override
@@ -171,44 +137,26 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    /**
-     * Returns the rotation angle of the triangle shape (mTriangle).
-     *
-     * @return - A float representing the rotation angle.
-     */
-    public float getAngle() {
-        return mAngle;
-    }
-
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void setAngle(float angle) {
-        mAngle = angle;
-    }
-
-
     public void createFigure() {
         if(m3DObject == null) {
             Log.e(TAG, "m3DObject == null");
             return;
         }
-        if(mSquare != null) mSquare.clear();
-        else mSquare = new ArrayList<>();
+        if(mShape != null) mShape.clear();
+        else mShape = new ArrayList<>();
 
         for(Figure f: m3DObject.face){
             float[] vertex = new float[f.vertex.size()];
             for(int i = 0; i < vertex.length - 1; i++){
                 vertex[i] = f.vertex.get(i);
             }
-            mSquare.add(new Square(vertex));
+            mShape.add(new Shape(vertex));
         }
     }
 
 
     public void setObject(Base3DObject object){
         m3DObject = object;
-        //createFigure();
     }
 
 

@@ -27,9 +27,9 @@ import android.util.Log;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Square {
+public class Shape {
 
-    private static final String TAG = "Square";
+    private static final String TAG = "Shape";
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
             // the coordinates of the objects that use this vertex shader
@@ -59,11 +59,6 @@ public class Square {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
-   /* static float squareCoords[] = {
-            -0.5f,  0.5f, 0.0f,   // top left
-            -0.5f, -0.5f, 0.0f,   // bottom left
-             0.5f, -0.5f, 0.0f,   // bottom right
-             0.5f,  0.5f, 0.0f }; */
 
     static float squareCoords[] = new float[12]; // top right
 
@@ -79,7 +74,7 @@ public class Square {
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Square(float[] vertex) {
+    public Shape(float[] vertex) {
         mVertex = vertex;
         vertexShader = MyGLRenderer.loadShader(
                 GLES20.GL_VERTEX_SHADER,
@@ -87,38 +82,7 @@ public class Square {
         fragmentShader = MyGLRenderer.loadShader(
                 GLES20.GL_FRAGMENT_SHADER,
                 fragmentShaderCode);
-        /*squareCoords = vertex;
-      //  Log.d(TAG , squareCoords.toString());
-        // initialize vertex byte buffer for shape coordinates
-        ByteBuffer bb = ByteBuffer.allocateDirect(
-        // (# of coordinate values * 4 bytes per float)
-                squareCoords.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(squareCoords);
-        vertexBuffer.position(0);
 
-        // initialize byte buffer for the draw list
-        ByteBuffer dlb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 2 bytes per short)
-                drawOrder.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        drawListBuffer = dlb.asShortBuffer();
-        drawListBuffer.put(drawOrder);
-        drawListBuffer.position(0);
-
-        // prepare shaders and OpenGL program
-        int vertexShader = MyGLRenderer.loadShader(
-                GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(
-                GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
-
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram); */                 // create OpenGL program executables
     }
 
     /**
@@ -148,14 +112,6 @@ public class Square {
         drawListBuffer = dlb.asShortBuffer();
         drawListBuffer.put(drawOrder);
         drawListBuffer.position(0);
-
-        // prepare shaders and OpenGL program
-        /*int vertexShader = MyGLRenderer.loadShader(
-                GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(
-                GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);*/
 
         mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
@@ -206,8 +162,5 @@ public class Square {
     public float[] getVertex(){
         return mVertex;
     }
-
-
-
 
 }

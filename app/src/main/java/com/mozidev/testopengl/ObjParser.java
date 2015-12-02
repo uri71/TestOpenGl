@@ -17,11 +17,6 @@ public class ObjParser {
 
     private static final String TAG = "ObjParser";
 
-    public ObjParser() {
-
-    }
-
-
     public Base3DObject parse() {
          File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "test.obj");
         if(!file.exists()){
@@ -29,7 +24,7 @@ public class ObjParser {
         }
 
         Base3DObject object = new Base3DObject();
-        List<String> lines = new LinkedList<String>();
+        List<String> lines = new LinkedList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;

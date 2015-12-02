@@ -29,13 +29,9 @@ public class MainActivity extends Activity {
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-        ObjParser parser = new ObjParser();
-        Base3DObject object = parser.parse();
 
-        mGLView = new MyGLSurfaceView(this, object);
+        mGLView = new MyGLSurfaceView(this, new ObjParser().parse());
         setContentView(mGLView);
-
-
 
     }
 

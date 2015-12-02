@@ -1,6 +1,5 @@
 package com.mozidev.testopengl;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ public class Base3DObject {
     List<float[]> texture;
     List<float[]> norm;
     List<Figure> face;
-    List<String> order;
     String comment;
 
 
@@ -76,19 +74,6 @@ public class Base3DObject {
         Log.d(TAG, f.toString());
         face.add(f);
     }
-
-
-    public void reset(){
-        /*if(!TextUtils.isEmpty(order)){
-            face.clear();
-            //addF(order);
-        }*/
-    }
-
-   public void setOrder(String line){
-       if(order == null) order = new ArrayList<>();
-       order.add(line);
-   }
 
 
     public void addComment(String line) {

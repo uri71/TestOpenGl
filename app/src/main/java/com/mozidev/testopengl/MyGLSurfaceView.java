@@ -17,6 +17,7 @@ package com.mozidev.testopengl;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -28,7 +29,7 @@ import android.view.MotionEvent;
 public class MyGLSurfaceView extends GLSurfaceView {
 
     private static final String TAG = "MyGLSurfaceView";
-    private final MyGLRenderer mRenderer;
+    private MyGLRenderer mRenderer = null;
     private Base3DObject mObjects;
     private float res_x;
     private float res_y;
@@ -39,10 +40,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private long time;
     private long DELAY = 100;
 
+    public MyGLSurfaceView(Context context, AttributeSet atribs){
+        super(context, atribs);
+    }
 
-    public MyGLSurfaceView(Context context, Base3DObject object) {
-        super(context);
 
+    public void init(Base3DObject object) {
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);

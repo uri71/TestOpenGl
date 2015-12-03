@@ -19,27 +19,38 @@ import android.app.Activity;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.mozidev.testopengl.service.DownloadService;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
-    private GLSurfaceView mGLView;
+    private MyGLSurfaceView mGLView;
+    Base3DObject object;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
         ObjParser parser = new ObjParser();
-        Base3DObject object = parser.parse();
+        object = parser.parse();
 
-        mGLView = new MyGLSurfaceView(this, object);
-        setContentView(mGLView);
+        mGLView = (MyGLSurfaceView)findViewById(R.id.gl_view);
+        mGLView.init(object);
 
+        ImageButton ib1 = (ImageButton)findViewById(R.id.button_up);
+        ImageButton ib2 = (ImageButton)findViewById(R.id.button_down);
+        ImageButton ib3 = (ImageButton)findViewById(R.id.button_left);
+        ImageButton ib4 = (ImageButton)findViewById(R.id.button_right);
 
-
+        ib1.setOnClickListener(this);
+        ib2.setOnClickListener(this);
+        ib3.setOnClickListener(this);
+        ib4.setOnClickListener(this);
     }
 
     @Override
@@ -62,5 +73,24 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("url", "http://www.ex.ua/get/210726622");
         startService(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.button_up :
+                Log.d("OnClickListener", "button up clicked!");
+            break;
+            case R.id.button_down :
+                Log.d("OnClickListener", "button down clicked!");
+                break;
+            case R.id.button_left :
+                Log.d("OnClickListener", "button left clicked!");
+                break;
+            case R.id.button_right :
+                Log.d("OnClickListener", "button right clicked!");
+                break;
+
+        }
     }
 }

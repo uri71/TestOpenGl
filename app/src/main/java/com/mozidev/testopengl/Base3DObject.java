@@ -12,19 +12,20 @@ import java.util.List;
 public class Base3DObject implements Cloneable {
 
     private static final String TAG = "Base3DObject";
-    List<Float[]> vertex;
+    List<Float[]> points;
     List<float[]> texture;
     List<float[]> norm;
     List<Figure> face;
     List<String> order;
     String comment;
     int selectedId = -1;
+    public int changedFigureId = -1;
 
 
     public Base3DObject(final Base3DObject object) {
 
 
-        vertex = object.vertex;
+        points = object.points;
         norm = object.norm;
         comment = object.comment;
         texture = object.texture;
@@ -50,7 +51,7 @@ public class Base3DObject implements Cloneable {
 
 
     public Base3DObject() {
-        this.vertex = new ArrayList<>();
+        this.points = new ArrayList<>();
         this.texture = new ArrayList<>();
         this.norm = new ArrayList<>();
         this.face = new ArrayList<>();
@@ -63,7 +64,7 @@ public class Base3DObject implements Cloneable {
         for (int i = 1; i < split.length; i++) {
             v[i - 1] = Float.parseFloat(split[i]);
         }
-        vertex.add(v);
+        points.add(v);
     }
 
 
@@ -96,7 +97,7 @@ public class Base3DObject implements Cloneable {
             int p = Integer.valueOf(elem[0]);
             //int n = Integer.valueOf(elem[1]);
             //int t = Integer.valueOf(elem[2]);
-            Float[] array = vertex.get(p - 1);
+            Float[] array = points.get(p - 1);
             f.vertex.addAll(Arrays.asList(array));
             //f.norm.add(norm.get(n - 1));
             //f.texture.add(texture.get(t - 1));
@@ -120,10 +121,12 @@ public class Base3DObject implements Cloneable {
     private void resetF() {
         if (selectedId >= 0) {
             for (Figure f : face) {
-                if (f.order.contains(selectedId-1)) {
+                if (f.order.contains(selectedId+1)) {
                     f.vertex.clear();
                     for (int i : f.order) {
-                        f.vertex.addAll(Arrays.asList(vertex.get(i - 1)));
+                        f.vertex.addAll(Arrays.asList(points.get(i - 1)));
+                        Log.d(TAG, "reset figure selected id = " + selectedId + " order = " + f.orderString);
+                        changedFigureId = face.indexOf(f);
                     }
                 }
             }
@@ -131,7 +134,7 @@ public class Base3DObject implements Cloneable {
             for (Figure f : face) {
                 f.vertex.clear();
                 for (int i : f.order) {
-                    f.vertex.addAll(Arrays.asList(vertex.get(i - 1)));
+                    f.vertex.addAll(Arrays.asList(points.get(i - 1)));
                 }
             }
         }

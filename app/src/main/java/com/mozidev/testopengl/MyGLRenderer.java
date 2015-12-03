@@ -221,11 +221,39 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         for (Figure f : list) {
 
-            float[] vertex = new float[f.vertex.size()];
-            for (int i = 0; i < vertex.length - 1; i++) {
-                vertex[i] = f.vertex.get(i);
+                float[] vertex = new float[f.vertex.size()];
+                for (int i = 0; i < vertex.length - 1; i++) {
+                    vertex[i] = f.vertex.get(i);
+                }
+                mSquare.add(list.indexOf(f), new Square(vertex));
+        }
+    }
+
+
+
+    public void addFigure() {
+        if (m3DObject == null) {
+            Log.e(TAG, "m3DObject == null");
+            return;
+        }
+        final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
+
+        if (mSquare != null) {
+           // mSquare.clear();
+        } else {
+            mSquare = new ArrayList<>();
+        }
+
+        for (Figure f : list) {
+            if (m3DObject.changedFigureId == list.indexOf(f)) {
+
+                float[] vertex = new float[f.vertex.size()];
+                for (int i = 0; i < vertex.length - 1; i++) {
+                    vertex[i] = f.vertex.get(i);
+                }
+                mSquare.remove(list.indexOf(f));
+                mSquare.add(list.indexOf(f), new Square(vertex));
             }
-            mSquare.add(new Square(vertex));
         }
     }
 
@@ -248,7 +276,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Log.d(TAG, "resetObject");
         if (object != null) {
             m3DObject = object;
-            createFigure();
+            addFigure();
             createMarkers();
             setLine(true, m3DObject.selectedId);
         }
@@ -266,7 +294,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mMarker = new ArrayList<>();
         }
 
-        List<Float[]> vertex = ImmutableList.copyOf(m3DObject.vertex);
+        List<Float[]> vertex = ImmutableList.copyOf(m3DObject.points);
         for (Float[] f : vertex) {
             Marker marker;
             /*if (m3DObject.selectedId >= 0
@@ -292,7 +320,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             return;
         }
         if (selected) {
-            Float[] vertex = m3DObject.vertex.get(selectedId);
+            Float[] vertex = m3DObject.points.get(selectedId);
             mLines = new Line(vertex, ratio);
         } else {
             mLines = null;

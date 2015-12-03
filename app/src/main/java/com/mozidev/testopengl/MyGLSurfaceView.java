@@ -20,8 +20,6 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import java.util.Arrays;
-
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
@@ -176,12 +174,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
             if(id<0){
                 return false;
             }
-            Float[] selectedVertex = mObjects.vertex.get(id);
+            Float[] selectedVertex = mObjects.points.get(id);
             if(Math.hypot(selectedVertex[0] - dx, selectedVertex[1]-dy )< DISTANCE){
                 Float[] newVertex = new Float[] {
                         dx, dy, 0f
                 };
-                mObjects.vertex.set(id, newVertex);
+                mObjects.points.set(id, newVertex);
                 mObjects.recalculateFigure();
                 Log.d(TAG, "checkTouchEvent isselected = " + isSelected + "idMin = " + id);
                 return true;
@@ -197,18 +195,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
             double minHypot = -1;
             int idMin = -1;
 
-            for (Float[] vertex : mObjects.vertex) {
+            for (Float[] vertex : mObjects.points) {
                 double hypot = Math.hypot(vertex[0] - dx, vertex[1] - dy);
                 //Log.d(TAG, "hypot = " + hypot + "distance = " + DISTANCE);
 
                 if (hypot < DISTANCE) {
                     if (minHypot <= 0) {
                         minHypot = hypot;
-                        idMin = mObjects.vertex.indexOf(vertex);
+                        idMin = mObjects.points.indexOf(vertex);
                         // Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                     } else if (minHypot > hypot) {
                         minHypot = hypot;
-                        idMin = mObjects.vertex.indexOf(vertex);
+                        idMin = mObjects.points.indexOf(vertex);
                         //Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
                     }
 

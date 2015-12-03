@@ -139,15 +139,17 @@ public class MyGLSurfaceView extends GLSurfaceView {
                             requestRender();
                         }
                     });
-                    return true;
+                    //return true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (isSelected) {
+
                     if (time == 0) {
                         time = System.currentTimeMillis();
                     } else if (System.currentTimeMillis() - time > DELAY) {
                         time = System.currentTimeMillis();
+                        checkTouchEvent(x, y);
                         Log.d(TAG, "MotionEvent.ACTION_MOVE movie objects");
                         queueEvent(new Runnable() {
                             @Override
@@ -169,46 +171,66 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float dx = -(x - res_x / 2) / (res_x / 2);
         float dy = ((res_y / 2) - y) / (res_y / 2);
         dx = dx * (res_x / res_y);
-        Log.d(TAG, "dx = " + dx + " dy = " + dy);
-        double minHypot = -1;
-        Float[] nearbyPoint = null;
-        int idMin = -1;
-
-        for (Float[] vertex : mObjects.vertex) {
-            double hypot = Math.hypot(vertex[0] - dx, vertex[1] - dy);
-            //Log.d(TAG, "hypot = " + hypot + "distance = " + DISTANCE);
-
-            if (hypot < DISTANCE) {
-                if (minHypot <= 0) {
-                    minHypot = hypot;
-                    nearbyPoint = vertex;
-                    idMin = mObjects.vertex.indexOf(vertex);
-                   // Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
-                } else if (minHypot > hypot) {
-                    minHypot = hypot;
-                    nearbyPoint = vertex;
-                    idMin = mObjects.vertex.indexOf(vertex);
-                    //Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
-                }
-
-                //Log.d(TAG, "MIN = " + minHypot);
+        if(isSelected){
+            int id = mObjects.selectedId;
+            if(id<0){
+                return false;
+            }
+            Float[] selectedVertex = mObjects.vertex.get(id);
+            if(Math.hypot(selectedVertex[0] - dx, selectedVertex[1]-dy )< DISTANCE){
+                Float[] newVertex = new Float[] {
+                        dx, dy, 0f
+                };
+                mObjects.vertex.set(id, newVertex);
+                mObjects.recalculateFigure();
+                Log.d(TAG, "checkTouchEvent isselected = " + isSelected + "idMin = " + id);
+                return true;
+            } else {
+                mObjects.clearSelected();
+                Log.d(TAG, "checkTouchEvent clearSelected isselected = " + isSelected );
+                return false;
             }
 
-        }
-        if (idMin >= 0) {
-            Float[] newVertex = new Float[] {
-                    dx, dy, 0f
-            };
-
-            if (isSelected) {
-                mObjects.vertex.set(idMin, newVertex);
-                mObjects.recalculateFigure();
-            } else  mObjects.setSelectedId(idMin);
-            Log.d(TAG, "checkTouchEvent idMin = " + idMin);
         } else {
-            mObjects.clearSelected();
-            Log.d(TAG, "checkTouchEvent clearSelected");
+
+            Log.d(TAG, "dx = " + dx + " dy = " + dy);
+            double minHypot = -1;
+            int idMin = -1;
+
+            for (Float[] vertex : mObjects.vertex) {
+                double hypot = Math.hypot(vertex[0] - dx, vertex[1] - dy);
+                //Log.d(TAG, "hypot = " + hypot + "distance = " + DISTANCE);
+
+                if (hypot < DISTANCE) {
+                    if (minHypot <= 0) {
+                        minHypot = hypot;
+                        idMin = mObjects.vertex.indexOf(vertex);
+                        // Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
+                    } else if (minHypot > hypot) {
+                        minHypot = hypot;
+                        idMin = mObjects.vertex.indexOf(vertex);
+                        //Log.d(TAG, "Nearby Point = " + Arrays.toString(nearbyPoint));
+                    }
+
+                    //Log.d(TAG, "MIN = " + minHypot);
+                }
+
+            }
+            if (idMin >= 0) {
+                Float[] newVertex = new Float[] {
+                        dx, dy, 0f
+                };
+
+                if (isSelected) {
+                    //mObjects.vertex.set(idMin, newVertex);
+                    //mObjects.recalculateFigure();
+                } else mObjects.setSelectedId(idMin);
+                Log.d(TAG, "checkTouchEvent idMin = " + idMin);
+            } else {
+                mObjects.clearSelected();
+                Log.d(TAG, "checkTouchEvent clearSelected");
+            }
+            return idMin >= 0;
         }
-        return idMin >= 0;
     }
 }

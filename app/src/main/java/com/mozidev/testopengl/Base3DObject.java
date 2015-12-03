@@ -90,15 +90,18 @@ public class Base3DObject implements Cloneable {
     public void addF(String line) {
         String[] group = line.split(" ");
         Figure f = new Figure();
+        f.orderString = line;
         for (int i = 1; i < group.length; i++) {
             String[] elem = group[i].split("/");
             int p = Integer.valueOf(elem[0]);
-            int n = Integer.valueOf(elem[1]);
-            int t = Integer.valueOf(elem[2]);
+            //int n = Integer.valueOf(elem[1]);
+            //int t = Integer.valueOf(elem[2]);
             Float[] array = vertex.get(p - 1);
             f.vertex.addAll(Arrays.asList(array));
-            f.norm.add(norm.get(n - 1));
-            f.texture.add(texture.get(t - 1));
+            //f.norm.add(norm.get(n - 1));
+            //f.texture.add(texture.get(t - 1));
+            f.order.add(p);
+
             Log.d(TAG, f.vertex.toString());
         }
         Log.d(TAG, f.toString());
@@ -107,16 +110,38 @@ public class Base3DObject implements Cloneable {
 
 
     public void recalculateFigure() {
-        if (face != null) face.clear();
-        else face = new ArrayList<>();
-        for (String line : order) {
-            addF(line);
+        if (face == null) {
+            face = new ArrayList<>();
+        }
+        resetF();
+    }
+
+
+    private void resetF() {
+        if (selectedId >= 0) {
+            for (Figure f : face) {
+                if (f.order.contains(selectedId-1)) {
+                    f.vertex.clear();
+                    for (int i : f.order) {
+                        f.vertex.addAll(Arrays.asList(vertex.get(i - 1)));
+                    }
+                }
+            }
+        } else {
+            for (Figure f : face) {
+                f.vertex.clear();
+                for (int i : f.order) {
+                    f.vertex.addAll(Arrays.asList(vertex.get(i - 1)));
+                }
+            }
         }
     }
 
 
     public void setOrder(String line) {
-        if (order == null) order = new ArrayList<>();
+        if (order == null) {
+            order = new ArrayList<>();
+        }
         order.add(line);
     }
 

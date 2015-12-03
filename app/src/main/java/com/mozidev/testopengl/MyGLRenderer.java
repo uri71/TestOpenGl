@@ -20,8 +20,11 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -208,30 +211,30 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             Log.e(TAG, "m3DObject == null");
             return;
         }
-        final List<Figure> list = m3DObject.face;
+        final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
 
         if (mSquare != null) {
-            mSquare.clear();
+           // mSquare.clear();
         } else {
             mSquare = new ArrayList<>();
         }
 
-
-        // try {
         for (Figure f : list) {
+
             float[] vertex = new float[f.vertex.size()];
             for (int i = 0; i < vertex.length - 1; i++) {
                 vertex[i] = f.vertex.get(i);
             }
-
             mSquare.add(new Square(vertex));
         }
-        /*}
-        catch (Exception e) {
-            e.printStackTrace();
-        }*/
+    }
 
 
+    private float[] createTestVertex(float[] vertex) {
+        for(int i = 0; i<vertex.length - 1; i++){
+            vertex[i] = new Random().nextFloat();
+        }
+        return vertex;
     }
 
 
@@ -244,8 +247,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void resetObject(final Base3DObject object) {
         Log.d(TAG, "resetObject");
         if (object != null) {
-            m3DObject = new Base3DObject(object);
+            m3DObject = object;
             createFigure();
+            createMarkers();
             setLine(true, m3DObject.selectedId);
         }
     }
@@ -262,14 +266,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mMarker = new ArrayList<>();
         }
 
-        for (Float[] f : m3DObject.vertex) {
+        List<Float[]> vertex = ImmutableList.copyOf(m3DObject.vertex);
+        for (Float[] f : vertex) {
             Marker marker;
-            if (m3DObject.selectedId >= 0
+            /*if (m3DObject.selectedId >= 0
                     && m3DObject.vertex.indexOf(f) == m3DObject.selectedId) {
                 marker = new Marker(f, true);
-            } else {
+            } else {*/
                 marker = new Marker(f, false);
-            }
+            //}
             mMarker.add(marker);
         }
     }

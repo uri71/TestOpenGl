@@ -47,7 +47,7 @@ public class DownloadService extends Service {
     private void startForeground() {
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle("Test download obj file")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_show)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .build();
         this.startForeground(1, notification);

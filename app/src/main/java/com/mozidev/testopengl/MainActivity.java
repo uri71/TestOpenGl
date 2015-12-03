@@ -17,18 +17,30 @@ package com.mozidev.testopengl;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
 import com.mozidev.testopengl.service.DownloadService;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    private ImageButton buttonUp;
+    private ImageButton buttonDown;
+    private ImageButton buttonLeft;
+    private ImageButton buttonRight;
+    private ImageButton buttonShow;
+    private ImageButton buttonHide;
+
+    private Animation animation1;
+    private Animation animation2;
+
     private MyGLSurfaceView mGLView;
-    Base3DObject object;
+
+    private Base3DObject object;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,18 +51,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ObjParser parser = new ObjParser();
         object = parser.parse();
 
+        animation1 = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        animation2 = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+
+        animation1.setDuration(500);
+        animation2.setDuration(500);
+
         mGLView = (MyGLSurfaceView)findViewById(R.id.gl_view);
         mGLView.init(object);
 
-        ImageButton ib1 = (ImageButton)findViewById(R.id.button_up);
-        ImageButton ib2 = (ImageButton)findViewById(R.id.button_down);
-        ImageButton ib3 = (ImageButton)findViewById(R.id.button_left);
-        ImageButton ib4 = (ImageButton)findViewById(R.id.button_right);
+        buttonUp = (ImageButton)findViewById(R.id.button_up);
+        buttonDown = (ImageButton)findViewById(R.id.button_down);
+        buttonLeft = (ImageButton)findViewById(R.id.button_left);
+        buttonRight = (ImageButton)findViewById(R.id.button_right);
+        buttonShow = (ImageButton)findViewById(R.id.button_control_panel_show);
+        buttonHide = (ImageButton)findViewById(R.id.button_control_panel_hide);
 
-        ib1.setOnClickListener(this);
-        ib2.setOnClickListener(this);
-        ib3.setOnClickListener(this);
-        ib4.setOnClickListener(this);
+        buttonUp.setVisibility(View.GONE);
+        buttonDown.setVisibility(View.GONE);
+        buttonLeft.setVisibility(View.GONE);
+        buttonRight.setVisibility(View.GONE);
+        buttonHide.setVisibility(View.GONE);
+
+        buttonUp.setOnClickListener(this);
+        buttonDown.setOnClickListener(this);
+        buttonLeft.setOnClickListener(this);
+        buttonRight.setOnClickListener(this);
+        buttonShow.setOnClickListener(this);
+        buttonHide.setOnClickListener(this);
     }
 
     @Override
@@ -77,5 +105,36 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         mGLView.onClick(v);
 
+        switch(v.getId()){
+
+            case R.id.button_control_panel_show :
+                buttonShow.startAnimation(animation2);
+                buttonUp.setVisibility(View.VISIBLE);
+                buttonDown.setVisibility(View.VISIBLE);
+                buttonLeft.setVisibility(View.VISIBLE);
+                buttonRight.setVisibility(View.VISIBLE);
+                buttonShow.setVisibility(View.GONE);
+                buttonHide.setVisibility(View.VISIBLE);
+                buttonUp.startAnimation(animation1);
+                buttonDown.startAnimation(animation1);
+                buttonLeft.startAnimation(animation1);
+                buttonRight.startAnimation(animation1);
+                buttonHide.startAnimation(animation1);
+                break;
+            case R.id.button_control_panel_hide :
+                buttonUp.startAnimation(animation2);
+                buttonDown.startAnimation(animation2);
+                buttonLeft.startAnimation(animation2);
+                buttonRight.startAnimation(animation2);
+                buttonHide.startAnimation(animation2);
+                buttonUp.setVisibility(View.GONE);
+                buttonDown.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.GONE);
+                buttonRight.setVisibility(View.GONE);
+                buttonShow.setVisibility(View.VISIBLE);
+                buttonHide.setVisibility(View.GONE);
+                buttonShow.startAnimation(animation1);
+                break;
+        }
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorDownloadNewContentButtonNormal">#5978d6c7</color>
+    <color name="colorDownloadNewContentButtonPressed">#596ca198</color>
+    <color name="colorDownloadNewContentButtonHovered">#5923695d</color>
+    <color name="colorDownloadNewContentButtonStroke">#8038485c</color>
+</resources>

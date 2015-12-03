@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.mozidev.testopengl.Constants;
 import com.mozidev.testopengl.R;
 
 import java.io.File;
@@ -109,12 +110,18 @@ public class DownloadService extends Service {
                     if (status == DownloadManager.STATUS_SUCCESSFUL) {
 
                         //// TODO: 02.12.15 processing event
+                        Intent intent1 = new Intent(Constants.INTENT_FILTER_DOWNLOAD);
+                        intent1.putExtra(Constants.EXTRA_DOWNLOAD, true);
+                        sendBroadcast(intent1);
 
                     } else if (status == DownloadManager.STATUS_FAILED) {
                         // report by backend about failure
                         Log.e(TAG, "Download video id = " + downloadId + " FAILED");
                         int reason = cursor.getInt(columnError);
                         parseErrorMessage(reason);
+                        Intent intent1 = new Intent(Constants.INTENT_FILTER_DOWNLOAD);
+                        intent1.putExtra(Constants.EXTRA_DOWNLOAD, false);
+                        sendBroadcast(intent1);
                     } else if (status == DownloadManager.STATUS_PAUSED) {
 
                     } else if (status == DownloadManager.STATUS_PENDING) {

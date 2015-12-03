@@ -70,27 +70,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         mGLView.onResume();
-        Intent intent = new Intent(this, DownloadService.class);
-        intent.putExtra("url", "http://www.ex.ua/get/210726622");
-        startService(intent);
     }
+
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.button_up :
-                Log.d("OnClickListener", "button up clicked!");
-            break;
-            case R.id.button_down :
-                Log.d("OnClickListener", "button down clicked!");
-                break;
-            case R.id.button_left :
-                Log.d("OnClickListener", "button left clicked!");
-                break;
-            case R.id.button_right :
-                Log.d("OnClickListener", "button right clicked!");
-                break;
+        mGLView.onClick(v);
 
-        }
     }
 }

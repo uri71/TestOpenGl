@@ -20,15 +20,17 @@ import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
  * interacting with drawn objects.
  */
-public class MyGLSurfaceView extends GLSurfaceView {
+public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListener {
 
     private static final String TAG = "MyGLSurfaceView";
+    private static final float SHIFT_STEP = 0.005f;
     private MyGLRenderer mRenderer = null;
     private Base3DObject mObjects;
     private float res_x;
@@ -40,7 +42,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private long time;
     private long DELAY = 100;
 
-    public MyGLSurfaceView(Context context, AttributeSet atribs){
+
+    public MyGLSurfaceView(Context context, AttributeSet atribs) {
         super(context, atribs);
     }
 
@@ -61,45 +64,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
 
-    //private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
-    private float mPreviousX;
-    private float mPreviousY;
-
-
-   /* @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
-        res_x = getWidth();
-        res_y = getHeight();
-        DISTANCE = 150 / res_x;
-        float x = e.getX();
-        float y = e.getY();
-        checkTouchEvent(x, y);
-        Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
-
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_MOVE:
-
-                float dx = x - mPreviousX;
-                float dy = y - mPreviousY;
-
-                queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRenderer.resetObject(mObjects);
-                        requestRender();
-                    }
-                });
-        }
-
-        mPreviousX = x;
-        mPreviousY = y;
-        return true;
-    }*/
-
-
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         // MotionEvent reports input details from the touch screen
@@ -112,7 +76,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         final float x = e.getX();
         final float y = e.getY();
 
-       // Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
+        // Log.d(TAG, "onTouchEvent x = " + x + ";  y = " + y + " action = " + e.getAction());
 
 
         switch (e.getAction()) {
@@ -172,13 +136,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float dx = -(x - res_x / 2) / (res_x / 2);
         float dy = ((res_y / 2) - y) / (res_y / 2);
         dx = dx * (res_x / res_y);
-        if(isSelected){
+        if (isSelected) {
             int id = mObjects.selectedId;
-            if(id<0){
+            if (id < 0) {
                 return false;
             }
             Float[] selectedVertex = mObjects.points.get(id);
-            if(Math.hypot(selectedVertex[0] - dx, selectedVertex[1]-dy )< DISTANCE){
+            if (Math.hypot(selectedVertex[0] - dx, selectedVertex[1] - dy) < DISTANCE) {
                 Float[] newVertex = new Float[] {
                         dx, dy, 0f
                 };
@@ -188,7 +152,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 return true;
             } else {
                 mObjects.clearSelected();
-                Log.d(TAG, "checkTouchEvent clearSelected isselected = " + isSelected );
+                Log.d(TAG, "checkTouchEvent clearSelected isselected = " + isSelected);
                 return false;
             }
 
@@ -225,7 +189,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 if (isSelected) {
                     //mObjects.vertex.set(idMin, newVertex);
                     //mObjects.recalculateFigure();
-                } else mObjects.setSelectedId(idMin);
+                } else {
+                    mObjects.setSelectedId(idMin);
+                }
                 Log.d(TAG, "checkTouchEvent idMin = " + idMin);
             } else {
                 mObjects.clearSelected();
@@ -233,5 +199,47 @@ public class MyGLSurfaceView extends GLSurfaceView {
             }
             return idMin >= 0;
         }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (!isSelected) {
+            return;
+        }
+        float dx = 0;
+        float dy = 0;
+        switch (v.getId()) {
+            case R.id.button_up:
+                dy += SHIFT_STEP;
+                Log.d("OnClickListener", "button up clicked!");
+                break;
+            case R.id.button_down:
+                dy -= SHIFT_STEP;
+                Log.d("OnClickListener", "button down clicked!");
+                break;
+            case R.id.button_left:
+                dx += SHIFT_STEP;
+                Log.d("OnClickListener", "button left clicked!");
+                break;
+            case R.id.button_right:
+                dx -= SHIFT_STEP;
+                Log.d("OnClickListener", "button right clicked!");
+                break;
+        }
+        int selectedId = mObjects.selectedId;
+        Float[] newVertex = mObjects.points.get(selectedId);
+        newVertex[0] +=dx;
+        newVertex[1] +=dy;
+        mObjects.points.set(selectedId, newVertex);
+        mObjects.recalculateFigure();
+        queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mRenderer.resetObject(mObjects);
+                requestRender();
+            }
+        });
+        Log.d(TAG, "checkTouchEvent isselected = " + isSelected + "idMin = " + selectedId);
     }
 }

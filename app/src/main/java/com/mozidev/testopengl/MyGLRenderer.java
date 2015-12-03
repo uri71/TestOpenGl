@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -104,7 +103,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             }
         }
 
-        if(mLines != null) mLines.draw(mMVPMatrix);
+        if (mLines != null) {
+            mLines.draw(mMVPMatrix);
+        }
 
 
     }
@@ -196,21 +197,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
 
         if (mSquare != null) {
-           // mSquare.clear();
+            // mSquare.clear();
         } else {
             mSquare = new ArrayList<>();
         }
 
         for (Figure f : list) {
 
-                float[] vertex = new float[f.vertex.size()];
-                for (int i = 0; i < vertex.length - 1; i++) {
-                    vertex[i] = f.vertex.get(i);
-                }
-                mSquare.add(list.indexOf(f), new Square(vertex));
+            float[] vertex = new float[f.vertex.size()];
+            for (int i = 0; i < vertex.length - 1; i++) {
+                vertex[i] = f.vertex.get(i);
+            }
+            mSquare.add(list.indexOf(f), new Square(vertex));
         }
     }
-
 
 
     public void addFigure() {
@@ -220,9 +220,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
         final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
 
-        if (mSquare != null) {
-           // mSquare.clear();
-        } else {
+        if (mSquare == null) {
             mSquare = new ArrayList<>();
         }
 
@@ -233,24 +231,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 for (int i = 0; i < vertex.length - 1; i++) {
                     vertex[i] = f.vertex.get(i);
                 }
-                mSquare.remove(list.indexOf(f));
-                mSquare.add(list.indexOf(f), new Square(vertex));
+                mSquare.set(list.indexOf(f), new Square(vertex));
             }
         }
     }
 
 
-    private float[] createTestVertex(float[] vertex) {
-        for(int i = 0; i<vertex.length - 1; i++){
-            vertex[i] = new Random().nextFloat();
-        }
-        return vertex;
-    }
-
-
     public void setObject(Base3DObject object) {
         m3DObject = object;
-        //createFigure();
     }
 
 
@@ -279,19 +267,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         List<Float[]> vertex = ImmutableList.copyOf(m3DObject.points);
         for (Float[] f : vertex) {
             Marker marker;
-            /*if (m3DObject.selectedId >= 0
-                    && m3DObject.vertex.indexOf(f) == m3DObject.selectedId) {
-                marker = new Marker(f, true);
-            } else {*/
-                marker = new Marker(f, false);
-            //}
+
+            marker = new Marker(f, false);
             mMarker.add(marker);
         }
-    }
-
-
-    public void setSelected(Base3DObject mObjects) {
-
     }
 
 

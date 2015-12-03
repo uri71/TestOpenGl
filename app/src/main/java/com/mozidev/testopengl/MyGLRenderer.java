@@ -287,4 +287,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mLines = null;
         }
     }
+
+
+    public void stop() {
+        mSquare.clear();
+        mSquare = null;
+        mMarker.clear();
+        mMarker = null;
+        mLines = null;
+    }
 }

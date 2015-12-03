@@ -89,6 +89,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // you should consider de-allocating objects that
         // consume significant memory here.
         mGLView.onPause();
+
     }
 
     @Override
@@ -136,5 +137,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 buttonShow.startAnimation(animation1);
                 break;
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       // mGLView.
     }
 }

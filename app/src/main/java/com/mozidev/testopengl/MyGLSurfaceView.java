@@ -242,4 +242,11 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
         });
         Log.d(TAG, "checkTouchEvent isselected = " + isSelected + "idMin = " + selectedId);
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRenderer.stop();
+    }
 }

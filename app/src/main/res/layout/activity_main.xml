@@ -58,6 +58,8 @@
             android:id="@+id/button_control_panel_show"
             android:src="@mipmap/ic_show"
             android:background="@drawable/rounded_button_show"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -68,6 +70,8 @@
             android:id="@+id/button_control_panel_hide"
             android:src="@mipmap/ic_hide"
             android:background="@drawable/rounded_button_hide"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />

@@ -17,7 +17,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MappingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape" >
 
@@ -30,12 +30,16 @@
         </service>
 
         <activity
-            android:name=".DownloadActivity"
-            android:label="@string/title_activity_download" >
+            android:name=".activity.DownloadActivity"
+            android:label="@string/title_activity_download"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name=".SplashActivity"
-            android:label="@string/title_activity_splash" >
+            android:name=".activity.SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

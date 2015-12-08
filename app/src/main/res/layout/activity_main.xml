@@ -2,9 +2,10 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:keepScreenOn="true"
     tools:context=".MainActivity">
 
-    <com.mozidev.testopengl.MyGLSurfaceView
+    <com.mozidev.testopengl.view.MyGLSurfaceView
         android:id="@+id/gl_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -60,6 +61,8 @@
             android:background="@drawable/rounded_button_show"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
             android:layout_alignParentEnd="true" />
 
         <ImageButton
@@ -70,7 +73,22 @@
             android:background="@drawable/rounded_button_hide"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
             android:layout_alignParentEnd="true" />
+
+
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/button_save"
+            android:src="@drawable/ic_check_black_18dp"
+            android:background="@drawable/button_save_selector"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

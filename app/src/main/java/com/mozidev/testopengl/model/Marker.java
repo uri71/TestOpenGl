@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.model;
 
 import android.opengl.GLES20;
+
+import com.mozidev.testopengl.view.MyGLRenderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -25,7 +27,7 @@ import java.nio.ShortBuffer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Line {
+public class Marker {
 
     private static final String TAG = "Square";
     private final String vertexShaderCode =
@@ -64,23 +66,25 @@ public class Line {
              0.5f,  0.5f, 0.0f }; */
 
 
-    private final short drawOrder[] = { 0, 1, 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = { 0, 1, 2, 3 }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     float color[] ;
-    //float blue[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+    float blue[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
     float red[] = { 0.9f, 0.0f, 0.0f, 1.0f };
     private final int vertexShader;
     private final int fragmentShader;
     private float SHIFT = 0.01f;
+    private boolean isSelected = false;
 
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Line(Float[] vertex, float ratio) {
-        mVertex = calculateVertex(vertex, ratio);
+    public Marker(Float[] vertex, boolean selected) {
+        isSelected = selected;
+        mVertex = calculateVertex(vertex);
         vertexShader = MyGLRenderer.loadShader(
                 GLES20.GL_VERTEX_SHADER,
                 vertexShaderCode);
@@ -91,27 +95,20 @@ public class Line {
     }
 
 
-    private float[] calculateVertex(Float[] vertex, float ratio) {
-        float[] coord = new float[15];
-        coord[0] = -1*ratio;      //0
-        coord[1] = vertex[1];
+    private float[] calculateVertex(Float[] vertex) {
+        float[] coord = new float[12];
+        coord[0] = vertex[0] - SHIFT;
+        coord[1] = vertex[1] + SHIFT;
         coord[2] = vertex[2];
-
-        coord[3] = 1*ratio;       //1
-        coord[4] = vertex[1] ;
+        coord[3] = vertex[0] - SHIFT;
+        coord[4] = vertex[1] - SHIFT;
         coord[5] = vertex[2];
-
-        coord[6] = vertex[0] ;//2
-        coord[7] = vertex[1];
+        coord[6] = vertex[0] + SHIFT;
+        coord[7] = vertex[1] - SHIFT;
         coord[8] = vertex[2];
-
-        coord[9] = vertex[0] ;//3
-        coord[10] = 1;
+        coord[9] = vertex[0] + SHIFT;
+        coord[10] = vertex[1] + SHIFT;
         coord[11] = vertex[2];
-
-        coord[12] = vertex[0];//4
-        coord[13] = -1;
-        coord[14] = vertex[2];
         return coord;
     }
 
@@ -166,7 +163,7 @@ public class Line {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        color = red;
+        color = isSelected ? red : blue;
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix
@@ -179,7 +176,7 @@ public class Line {
 
         // Draw the square
         GLES20.glDrawElements(
-                GLES20.GL_LINE_STRIP, drawOrder.length,
+                GLES20.GL_LINE_LOOP, drawOrder.length,
                 GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
         // Disable vertex array
@@ -188,9 +185,10 @@ public class Line {
 
 
 
-    /*public void setVertex(Float[] vertex, boolean selected){
+    public void setVertex(Float[] vertex, boolean selected){
         mVertex = calculateVertex(vertex);
-    }*/
+        isSelected = selected;
+    }
 
     public float[] getVertex(){
         return mVertex;

@@ -1,4 +1,4 @@
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.model;
 
 import android.util.Log;
 
@@ -12,14 +12,17 @@ import java.util.List;
 public class Base3DObject implements Cloneable {
 
     private static final String TAG = "Base3DObject";
-    List<Float[]> points;
-    List<float[]> texture;
-    List<float[]> norm;
-    List<Figure> face;
-    List<String> order;
-    String comment;
-    int selectedId = -1;
+    public List<Float[]> points;
+    public List<float[]> texture;
+    public List<float[]> norm;
+    public List<Figure> face;
+    public List<String> order;
+    public String comment;
+    public int selectedId = -1;
     public int changedFigureId = -1;
+    private String parseredFile;
+
+
 
 
     public Base3DObject(final Base3DObject object) {
@@ -165,4 +168,16 @@ public class Base3DObject implements Cloneable {
             throw new AssertionError();
         }
     }
+
+
+    public void setParseredFile(String s) {
+        parseredFile = s;
+    }
+
+
+    public String getParseredFile() {
+        return parseredFile;
+    }
+
+
 }

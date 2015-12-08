@@ -1,5 +1,6 @@
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.utils;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -11,19 +12,31 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by y.storchak on 30.11.15.
+ * Created by y.storchak on 07.12.15.
  */
-public class ObjParser {
+public class OBJUtils {
 
-    private static final String TAG = "ObjParser";
+    private static final String TAG = "OBJUtils";
+
+
+    public static void create(Context context, Base3DObject object){
+        StringBuilder builder = new StringBuilder();
+        builder.append(object.comment + "\n");
+        for(Float[] point:object.points){
+            builder.append("v " + point[0] + " " + point[1] + " " + point[2] + "\n");
+        }
+        builder.append(object.getParseredFile());
+        FileUtils.convertStringToFile(context, builder.toString());
+
+    }
 
 
     public Base3DObject parse() {
-         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "test.obj");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "test.obj");
         if(!file.exists()){
-            Log.e(TAG, "file "+ file.getPath() + " not exist");
+            Log.e(TAG, "file " + file.getPath() + " not exist");
         }
-StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         Base3DObject object = new Base3DObject();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -57,5 +70,4 @@ StringBuilder builder = new StringBuilder();
         return object;
 
     }
-
 }

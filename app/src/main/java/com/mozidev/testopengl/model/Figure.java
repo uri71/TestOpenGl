@@ -1,4 +1,4 @@
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class Figure {
 
-    List<Float> vertex;
-    List<float[]> norm;
-    List<float[]> texture;
+    public List<Float> vertex;
+    public List<float[]> norm;
+    public List<float[]> texture;
     public String orderString;
     public List<Integer> order;
 

@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import com.mozidev.testopengl.CreatorObjFile;
+import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.model.Base3DObject;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -204,9 +211,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (!isSelected) {
-            return;
-        }
+
+
         float dx = 0;
         float dy = 0;
         switch (v.getId()) {
@@ -226,11 +232,22 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                 dx -= SHIFT_STEP;
                 Log.d("OnClickListener", "button right clicked!");
                 break;
+            case R.id.button_save:
+                Log.d("OnClickListener", "button right clicked!");
+                showDialog();
+                return;
+        }
+        if (!isSelected) {
+            if (dx + dy != 0) {
+                Toast.makeText(getContext(), "Select a point please", Toast.LENGTH_SHORT).show();
+            }
+            return;
         }
         int selectedId = mObjects.selectedId;
+
         Float[] newVertex = mObjects.points.get(selectedId);
-        newVertex[0] +=dx;
-        newVertex[1] +=dy;
+        newVertex[0] += dx;
+        newVertex[1] += dy;
         mObjects.points.set(selectedId, newVertex);
         mObjects.recalculateFigure();
         queueEvent(new Runnable() {
@@ -241,6 +258,30 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
             }
         });
         Log.d(TAG, "checkTouchEvent isselected = " + isSelected + "idMin = " + selectedId);
+    }
+
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                saveMapping();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setMessage("Are you sure to save changes and finish mapping?").show();
+    }
+
+
+    private void saveMapping() {
+       // mRenderer.stop();
+        new CreatorObjFile().create(getContext(), mObjects);
+
     }
 
 

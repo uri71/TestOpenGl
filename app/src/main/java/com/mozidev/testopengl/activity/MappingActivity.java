@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.mozidev.testopengl.service.DownloadService;
+import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.view.MyGLSurfaceView;
+import com.mozidev.testopengl.ObjParser;
+import com.mozidev.testopengl.R;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MappingActivity extends Activity implements View.OnClickListener {
 
     private ImageButton buttonUp;
     private ImageButton buttonDown;
@@ -41,6 +43,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private MyGLSurfaceView mGLView;
 
     private Base3DObject object;
+    private ImageButton buttonSave;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +70,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         buttonRight = (ImageButton)findViewById(R.id.button_right);
         buttonShow = (ImageButton)findViewById(R.id.button_control_panel_show);
         buttonHide = (ImageButton)findViewById(R.id.button_control_panel_hide);
+        buttonSave = (ImageButton)findViewById(R.id.button_save);
 
         buttonUp.setVisibility(View.GONE);
         buttonDown.setVisibility(View.GONE);
         buttonLeft.setVisibility(View.GONE);
         buttonRight.setVisibility(View.GONE);
         buttonHide.setVisibility(View.GONE);
+        buttonSave.setVisibility(View.GONE);
 
         buttonUp.setOnClickListener(this);
         buttonDown.setOnClickListener(this);
@@ -79,6 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         buttonRight.setOnClickListener(this);
         buttonShow.setOnClickListener(this);
         buttonHide.setOnClickListener(this);
+        buttonSave.setOnClickListener(this);
     }
 
     @Override
@@ -116,11 +123,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 buttonRight.setVisibility(View.VISIBLE);
                 buttonShow.setVisibility(View.GONE);
                 buttonHide.setVisibility(View.VISIBLE);
+                buttonSave.setVisibility(View.VISIBLE);
                 buttonUp.startAnimation(animation1);
                 buttonDown.startAnimation(animation1);
                 buttonLeft.startAnimation(animation1);
                 buttonRight.startAnimation(animation1);
                 buttonHide.startAnimation(animation1);
+                buttonSave.startAnimation(animation1);
                 break;
             case R.id.button_control_panel_hide :
                 buttonUp.startAnimation(animation2);
@@ -135,6 +144,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 buttonShow.setVisibility(View.VISIBLE);
                 buttonHide.setVisibility(View.GONE);
                 buttonShow.startAnimation(animation1);
+                buttonSave.startAnimation(animation2);
+                buttonSave.setVisibility(View.GONE);
+
                 break;
         }
     }

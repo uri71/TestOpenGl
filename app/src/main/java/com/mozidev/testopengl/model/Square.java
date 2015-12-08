@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.model;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.List;
 
 import android.opengl.GLES20;
-import android.util.Log;
+
+import com.mozidev.testopengl.view.MyGLRenderer;
 
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.

@@ -1,11 +1,12 @@
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.mozidev.testopengl.utils.FileUtils;
+import com.mozidev.testopengl.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,14 +17,10 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(FileUtils.isFile()){
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                } else {
-                    startActivity(new Intent(SplashActivity.this, DownloadActivity.class));
-                }
+                startActivity(new Intent(SplashActivity.this, DownloadActivity.class));
                 SplashActivity.this.finish();
             }
-        }, 5000);
+        }, 3000);
     }
 
 }

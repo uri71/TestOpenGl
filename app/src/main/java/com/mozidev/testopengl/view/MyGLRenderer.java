@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl;
+package com.mozidev.testopengl.view;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -21,6 +21,11 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
+import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.model.Figure;
+import com.mozidev.testopengl.model.Line;
+import com.mozidev.testopengl.model.Marker;
+import com.mozidev.testopengl.model.Square;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -290,10 +295,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     public void stop() {
-        mSquare.clear();
-        mSquare = null;
-        mMarker.clear();
-        mMarker = null;
+        if (mSquare != null) {
+            mSquare.clear();
+            mSquare = null;
+        }
+        if (mMarker != null) {
+            mMarker.clear();
+            mMarker = null;
+        }
         mLines = null;
     }
 }

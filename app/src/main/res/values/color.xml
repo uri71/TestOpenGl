@@ -4,4 +4,13 @@
     <color name="colorDownloadNewContentButtonPressed">#596ca198</color>
     <color name="colorDownloadNewContentButtonHovered">#5923695d</color>
     <color name="colorDownloadNewContentButtonStroke">#8038485c</color>
+    <color name="btnNormal">#9E9E9E</color>
+    <color name="btnPressed">#616161</color>
+    <color name="colorLoginButtonText">#00e571</color>
+    <color name="colorLoginText">#38485c</color>
+    <color name="colorLoginButtonNormal">#38485c</color>
+    <color name="colorLoginEditTextBackground">#5978d6c7</color>
+    <color name="colorDownloadAlertBackground">#E641f1a0</color>
+    <color name="colorDownloadAlertStroke">#38485c</color>
+    <color name="colorGrid">#666666</color>
 </resources>

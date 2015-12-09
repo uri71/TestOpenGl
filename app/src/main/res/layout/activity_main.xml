@@ -3,95 +3,94 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:keepScreenOn="true"
-    tools:context=".MainActivity">
+                tools:context=".MainActivity">
 
     <com.mozidev.testopengl.view.MyGLSurfaceView
         android:id="@+id/gl_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
+        android:id="@+id/btn_container"
         android:layout_width="192dp"
         android:layout_height="192dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
 
         <ImageButton
-            android:layout_width="64dp"
-            android:layout_height="64dp"
             android:id="@+id/button_up"
-            android:src="@drawable/ic_hardware_keyboard_arrow_up"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="128dp"
-            android:layout_centerHorizontal="true"
-            android:background="#400000FF"   />
+            android:background="#400000FF"
+            android:src="@drawable/ic_hardware_keyboard_arrow_up"/>
 
         <ImageButton
-            android:layout_width="64dp"
-            android:layout_height="64dp"
             android:id="@+id/button_down"
-            android:src="@drawable/ic_hardware_keyboard_arrow_down"
-            android:layout_marginTop="128dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_centerHorizontal="true"
-            android:background="#400000FF"   />
+            android:layout_marginTop="128dp"
+            android:background="#400000FF"
+            android:src="@drawable/ic_hardware_keyboard_arrow_down"/>
 
         <ImageButton
-            android:layout_width="64dp"
-            android:layout_height="64dp"
             android:id="@+id/button_left"
-            android:src="@drawable/ic_hardware_keyboard_arrow_left"
-            android:layout_marginTop="64dp"
-            android:layout_marginRight="128dp"
-            android:background="#400000FF"   />
-
-        <ImageButton
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:id="@+id/button_right"
-            android:src="@drawable/ic_hardware_keyboard_arrow_right"
+            android:layout_marginRight="128dp"
             android:layout_marginTop="64dp"
+            android:background="#400000FF"
+            android:src="@drawable/ic_hardware_keyboard_arrow_left"/>
+
+        <ImageButton
+            android:id="@+id/button_right"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginLeft="128dp"
-            android:background="#400000FF"   />
-
-        <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/button_control_panel_show"
-            android:src="@mipmap/ic_show"
-            android:background="@drawable/rounded_button_show"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-
-            android:layout_alignParentEnd="true" />
-
-        <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/button_control_panel_hide"
-            android:src="@mipmap/ic_hide"
-            android:background="@drawable/rounded_button_hide"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-
-            android:layout_alignParentEnd="true" />
+            android:layout_marginTop="64dp"
+            android:background="#400000FF"
+            android:src="@drawable/ic_hardware_keyboard_arrow_right"/>
 
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
             android:id="@+id/button_save"
-            android:src="@drawable/ic_check_black_18dp"
-            android:background="@drawable/button_save_selector"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_alignParentStart="true" />
+            android:background="@drawable/button_save_selector"
+            android:src="@drawable/ic_check_black_18dp"/>
 
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/button_control_panel_show"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_button_show"
+        android:src="@mipmap/ic_show"/>
+
+    <ImageButton
+        android:id="@+id/button_control_panel_hide"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_button_hide"
+        android:src="@mipmap/ic_hide"/>
 
 </RelativeLayout>

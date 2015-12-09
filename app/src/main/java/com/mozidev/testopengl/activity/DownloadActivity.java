@@ -8,7 +8,7 @@ import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.fragment.SitesFragment;
 import com.mozidev.testopengl.model.Site;
 
-public class DownloadActivity extends AppCompatActivity {
+public class DownloadActivity extends BaseActivity {
 
     public Site getCurrentSite() {
         return currentSite;

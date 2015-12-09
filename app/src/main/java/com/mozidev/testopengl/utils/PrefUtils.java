@@ -101,25 +101,6 @@ public class PrefUtils {
     }
 
 
-    public static List<Integer> getScreenSize(Context context) {
-
-        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
-        int width = prefs.getInt(Constants.PREFS_DEVICE_SCREEN_WIDTH, 0);
-        int height = prefs.getInt(Constants.PREFS_DEVICE_SCREEN_HEIGHT, 0);
-        List<Integer> size = new ArrayList<>();
-        size.add(width);
-        size.add(height);
-        return size;
-    }
-
-
-    public static void setScreenSize(Context context, List<Integer> size) {
-        SharedPreferences.Editor edit = context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-                .edit();
-        edit.putInt(Constants.PREFS_DEVICE_SCREEN_WIDTH, size.get(0));
-        edit.putInt(Constants.PREFS_DEVICE_SCREEN_HEIGHT, size.get(1));
-        edit.commit();
-    }
 
 
     public static void setDeviceName(Context context, String devCustomName) {
@@ -158,15 +139,6 @@ public class PrefUtils {
     }
 
 
-    public static String getRebootSoketUrl(Context context) {
-        return context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-                .getString(Constants.PREFS_REBOOT_SOCKET_URL, "");
-    }
-
-    public static void setRebootSoketUrl(Context context, String url){
-        context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-                .edit().putString(Constants.PREFS_REBOOT_SOCKET_URL, url).commit();
-    }
 
 
 

@@ -255,6 +255,11 @@ public class SocketConnection {
 
 
     public void disconnect(){
+        if(socket != null) {
+            //todo emit finish mapping
+            socket.disconnect();
+            socket = null;
+        }
         EventBus.getDefault().unregister(this);
     }
 }

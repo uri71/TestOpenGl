@@ -20,6 +20,7 @@ import com.mozidev.testopengl.activity.DownloadActivity;
 import com.mozidev.testopengl.activity.MappingActivity;
 import com.mozidev.testopengl.model.Site;
 import com.mozidev.testopengl.service.DownloadService;
+import com.mozidev.testopengl.service.SocketService;
 import com.mozidev.testopengl.utils.FileUtils;
 
 import butterknife.Bind;
@@ -29,7 +30,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends BaseFragment {
 
     @Bind(R.id.site)
     TextView site;
@@ -101,7 +102,13 @@ public class DetailsFragment extends Fragment {
 
     @OnClick(R.id.btn_connect)
     void connect() {
-        Toast.makeText(getActivity(), "This feature is disabled yet", Toast.LENGTH_LONG).show();
+        if(!isServiceRunning(SocketService.class)){
+            getActivity().startService(new Intent(getActivity(), SocketService.class));
+            connect.setText("Disconnect");
+        } else {
+            getActivity().stopService(new Intent(getActivity(), SocketService.class));
+            connect.setText("Connect");
+        }
     }
 
 

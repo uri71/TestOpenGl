@@ -15,27 +15,37 @@
  */
 package com.mozidev.testopengl.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
-import com.mozidev.testopengl.model.Base3DObject;
-import com.mozidev.testopengl.view.MyGLSurfaceView;
 import com.mozidev.testopengl.ObjParser;
 import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.view.MyGLSurfaceView;
 
-public class MappingActivity extends Activity implements View.OnClickListener {
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
+public class MappingActivity extends BaseActivity implements View.OnClickListener {
+
+    @Bind(R.id.button_up)
     private ImageButton buttonUp;
+    @Bind(R.id.button_up)
     private ImageButton buttonDown;
+    @Bind(R.id.button_up)
     private ImageButton buttonLeft;
+    @Bind(R.id.button_up)
     private ImageButton buttonRight;
+    @Bind(R.id.button_up)
     private ImageButton buttonShow;
+    @Bind(R.id.button_up)
     private ImageButton buttonHide;
+    @Bind(R.id.btn_container)
+    private RelativeLayout btnContainer;
 
     private Animation animation1;
     private Animation animation2;
@@ -50,6 +60,7 @@ public class MappingActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
         ObjParser parser = new ObjParser();
@@ -61,23 +72,11 @@ public class MappingActivity extends Activity implements View.OnClickListener {
         animation1.setDuration(500);
         animation2.setDuration(500);
 
-        mGLView = (MyGLSurfaceView)findViewById(R.id.gl_view);
+        mGLView = (MyGLSurfaceView) findViewById(R.id.gl_view);
         mGLView.init(object);
 
-        buttonUp = (ImageButton)findViewById(R.id.button_up);
-        buttonDown = (ImageButton)findViewById(R.id.button_down);
-        buttonLeft = (ImageButton)findViewById(R.id.button_left);
-        buttonRight = (ImageButton)findViewById(R.id.button_right);
-        buttonShow = (ImageButton)findViewById(R.id.button_control_panel_show);
-        buttonHide = (ImageButton)findViewById(R.id.button_control_panel_hide);
-        buttonSave = (ImageButton)findViewById(R.id.button_save);
-
-        buttonUp.setVisibility(View.GONE);
-        buttonDown.setVisibility(View.GONE);
-        buttonLeft.setVisibility(View.GONE);
-        buttonRight.setVisibility(View.GONE);
+        btnContainer.setVisibility(View.GONE);
         buttonHide.setVisibility(View.GONE);
-        buttonSave.setVisibility(View.GONE);
 
         buttonUp.setOnClickListener(this);
         buttonDown.setOnClickListener(this);
@@ -88,73 +87,50 @@ public class MappingActivity extends Activity implements View.OnClickListener {
         buttonSave.setOnClickListener(this);
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
-        // The following call pauses the rendering thread.
-        // If your OpenGL application is memory intensive,
-        // you should consider de-allocating objects that
-        // consume significant memory here.
+
         mGLView.onPause();
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        // The following call resumes a paused rendering thread.
-        // If you de-allocated graphic objects for onPause()
-        // this is a good place to re-allocate them.
         mGLView.onResume();
     }
 
 
     @Override
     public void onClick(View v) {
-        mGLView.onClick(v);
-
-        switch(v.getId()){
-
-            case R.id.button_control_panel_show :
+        switch (v.getId()) {
+            case R.id.button_control_panel_show:
                 buttonShow.startAnimation(animation2);
-                buttonUp.setVisibility(View.VISIBLE);
-                buttonDown.setVisibility(View.VISIBLE);
-                buttonLeft.setVisibility(View.VISIBLE);
-                buttonRight.setVisibility(View.VISIBLE);
                 buttonShow.setVisibility(View.GONE);
                 buttonHide.setVisibility(View.VISIBLE);
-                buttonSave.setVisibility(View.VISIBLE);
-                buttonUp.startAnimation(animation1);
-                buttonDown.startAnimation(animation1);
-                buttonLeft.startAnimation(animation1);
-                buttonRight.startAnimation(animation1);
                 buttonHide.startAnimation(animation1);
-                buttonSave.startAnimation(animation1);
-                break;
-            case R.id.button_control_panel_hide :
-                buttonUp.startAnimation(animation2);
-                buttonDown.startAnimation(animation2);
-                buttonLeft.startAnimation(animation2);
-                buttonRight.startAnimation(animation2);
+                btnContainer.setVisibility(View.VISIBLE);
+                btnContainer.startAnimation(animation1);
+                return;
+            case R.id.button_control_panel_hide:
+                btnContainer.startAnimation(animation2);
+                btnContainer.setVisibility(View.GONE);
                 buttonHide.startAnimation(animation2);
-                buttonUp.setVisibility(View.GONE);
-                buttonDown.setVisibility(View.GONE);
-                buttonLeft.setVisibility(View.GONE);
-                buttonRight.setVisibility(View.GONE);
                 buttonShow.setVisibility(View.VISIBLE);
                 buttonHide.setVisibility(View.GONE);
                 buttonShow.startAnimation(animation1);
-                buttonSave.startAnimation(animation2);
-                buttonSave.setVisibility(View.GONE);
-
-                break;
+                return;
         }
+        mGLView.onClick(v);
+
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // mGLView.
     }
 }

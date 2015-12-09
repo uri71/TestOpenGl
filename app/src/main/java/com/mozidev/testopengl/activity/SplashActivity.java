@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.mozidev.testopengl.utils.FileUtils;
 import com.mozidev.testopengl.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

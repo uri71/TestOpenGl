@@ -17,4 +17,9 @@ public class Constants {
     public static final String PREFS_WIFI_STRANGTH = "PREFS_WIFI_STRANGTH";
     public static final String PREFS_JSON = "PREFS_JSON";
     public static final int ID_NOTIFICATION_SOCKET_SERVICE = 1;
+    public static final String PREFS_DEVICE_ID = "PREFS_DEVICE_ID";
+
+    public static final String PREFS_DEVICE_NAME = "PREFS_DEVICE_NAME";
+    public static final String PREFS_HOST = "PREFS_HOST";
+    public static final String PREFS_PORT = "PREFS_PORT";
 }

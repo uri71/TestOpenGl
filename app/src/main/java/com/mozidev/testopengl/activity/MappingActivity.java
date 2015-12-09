@@ -33,19 +33,19 @@ import butterknife.ButterKnife;
 public class MappingActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.button_up)
-    private ImageButton buttonUp;
-    @Bind(R.id.button_up)
-    private ImageButton buttonDown;
-    @Bind(R.id.button_up)
-    private ImageButton buttonLeft;
-    @Bind(R.id.button_up)
-    private ImageButton buttonRight;
-    @Bind(R.id.button_up)
-    private ImageButton buttonShow;
-    @Bind(R.id.button_up)
-    private ImageButton buttonHide;
+     ImageButton buttonUp;
+    @Bind(R.id.button_down)
+     ImageButton buttonDown;
+    @Bind(R.id.button_left)
+     ImageButton buttonLeft;
+    @Bind(R.id.button_right)
+     ImageButton buttonRight;
+    @Bind(R.id.button_control_panel_show)
+     ImageButton buttonShow;
+    @Bind(R.id.button_control_panel_hide)
+     ImageButton buttonHide;
     @Bind(R.id.btn_container)
-    private RelativeLayout btnContainer;
+     RelativeLayout btnContainer;
 
     private Animation animation1;
     private Animation animation2;

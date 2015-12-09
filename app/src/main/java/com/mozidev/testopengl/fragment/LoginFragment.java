@@ -235,15 +235,12 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
                 public void run() {
 
                     if(success){
-                        /*if(newDevice){
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, new NameFragment(), Constants.FRAGMENT_NAME)
-                                    .commit();
-                        } else {
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, new DownloadFragment(), Constants.FRAGMENT_MEDIA)
-                                    .commit();
-                        }*/
+
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, new SitesFragment(), Constants.TAG_SITE_FRAGMENT)
+                                .commit();
                     } else {
                         //handling error events
                         if (message != null && (message.contains(Message.invalidPassword) || message.contains(Message.invalidOrganization))) {

@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl.model;
-
-import android.opengl.GLES20;
-
-import com.mozidev.testopengl.view.MyGLRenderer;
+package com.mozidev.testopengl.opengl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import android.opengl.GLES20;
+
+import com.mozidev.testopengl.view.MyGLRenderer;
+
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Marker {
+public class Square {
 
     private static final String TAG = "Square";
     private final String vertexShaderCode =
@@ -59,32 +59,23 @@ public class Marker {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
-   /* static float squareCoords[] = {
-            -0.5f,  0.5f, 0.0f,   // top left
-            -0.5f, -0.5f, 0.0f,   // bottom left
-             0.5f, -0.5f, 0.0f,   // bottom right
-             0.5f,  0.5f, 0.0f }; */
 
+    static float squareCoords[] = new float[12]; // top right
 
     private final short drawOrder[] = { 0, 1, 2, 3 }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    float color[] ;
-    float blue[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
-    float red[] = { 0.9f, 0.0f, 0.0f, 1.0f };
+    float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
     private final int vertexShader;
     private final int fragmentShader;
-    private float SHIFT = 0.01f;
-    private boolean isSelected = false;
 
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Marker(Float[] vertex, boolean selected) {
-        isSelected = selected;
-        mVertex = calculateVertex(vertex);
+    public Square(float[] vertex) {
+        mVertex = vertex;
         vertexShader = MyGLRenderer.loadShader(
                 GLES20.GL_VERTEX_SHADER,
                 vertexShaderCode);
@@ -94,25 +85,6 @@ public class Marker {
 
     }
 
-
-    private float[] calculateVertex(Float[] vertex) {
-        float[] coord = new float[12];
-        coord[0] = vertex[0] - SHIFT;
-        coord[1] = vertex[1] + SHIFT;
-        coord[2] = vertex[2];
-        coord[3] = vertex[0] - SHIFT;
-        coord[4] = vertex[1] - SHIFT;
-        coord[5] = vertex[2];
-        coord[6] = vertex[0] + SHIFT;
-        coord[7] = vertex[1] - SHIFT;
-        coord[8] = vertex[2];
-        coord[9] = vertex[0] + SHIFT;
-        coord[10] = vertex[1] + SHIFT;
-        coord[11] = vertex[2];
-        return coord;
-    }
-
-
     /**
      * Encapsulates the OpenGL ES instructions for drawing this shape.
      *
@@ -121,8 +93,8 @@ public class Marker {
      */
     public void draw(float[] mvpMatrix) {
         if(mProgram != 0)GLES20.glDeleteProgram(mProgram);
-        //  Log.d(TAG , squareCoords.toString());
-        // initialize vertex byte buffer for shape coordinates
+        squareCoords = mVertex;
+
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
                 mVertex.length * 4);
@@ -163,7 +135,6 @@ public class Marker {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        color = isSelected ? red : blue;
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix
@@ -183,18 +154,12 @@ public class Marker {
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
 
-
-
-    public void setVertex(Float[] vertex, boolean selected){
-        mVertex = calculateVertex(vertex);
-        isSelected = selected;
+    public void setVertex(float[] vertex){
+        mVertex = vertex;
     }
 
     public float[] getVertex(){
         return mVertex;
     }
-
-
-
 
 }

@@ -3,7 +3,7 @@ package com.mozidev.testopengl;
 import android.os.Environment;
 import android.util.Log;
 
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -55,12 +55,12 @@ public class PrefUtils {
 
     public static void setWIFIStrangth(Context context, int signalStrangth) {
         context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-                .edit().putInt(Constants.PREFS_WIFI_STRANGTH, signalStrangth).commit();
+                .edit().putInt(Constants.PREFS_WIFI_STRENGTH, signalStrangth).commit();
     }
 
     public static int getWIFIStrangth(Context context) {
         return context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-                .getInt(Constants.PREFS_WIFI_STRANGTH, 0);
+                .getInt(Constants.PREFS_WIFI_STRENGTH, 0);
     }
 
 

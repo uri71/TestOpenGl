@@ -2,7 +2,7 @@ package com.mozidev.testopengl;
 
 import android.content.Context;
 
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.utils.FileUtils;
 
 /**

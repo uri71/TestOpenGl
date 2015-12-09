@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.

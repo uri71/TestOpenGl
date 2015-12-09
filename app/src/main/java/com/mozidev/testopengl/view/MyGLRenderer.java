@@ -21,11 +21,11 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
-import com.mozidev.testopengl.model.Base3DObject;
-import com.mozidev.testopengl.model.Figure;
-import com.mozidev.testopengl.model.Line;
-import com.mozidev.testopengl.model.Marker;
-import com.mozidev.testopengl.model.Square;
+import com.mozidev.testopengl.opengl.Base3DObject;
+import com.mozidev.testopengl.opengl.Figure;
+import com.mozidev.testopengl.opengl.Line;
+import com.mozidev.testopengl.opengl.Marker;
+import com.mozidev.testopengl.opengl.Square;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 }
             }
         }
-
         if (mMarker != null) {
             // if(mSquare.size() >2)mSquare.remove(mSquare.size()-1);
             for (Marker marker : mMarker) {

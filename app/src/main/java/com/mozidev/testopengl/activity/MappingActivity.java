@@ -20,10 +20,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.view.MyGLSurfaceView;
 import com.mozidev.testopengl.ObjParser;
 import com.mozidev.testopengl.R;

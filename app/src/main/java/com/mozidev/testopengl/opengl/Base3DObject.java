@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.opengl;
 
 import android.util.Log;
 

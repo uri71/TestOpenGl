@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.opengl;
 
 import java.util.ArrayList;
 import java.util.HashSet;

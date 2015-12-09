@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.opengl;
 
 import android.opengl.GLES20;
 

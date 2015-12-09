@@ -48,7 +48,7 @@ StringBuilder builder = new StringBuilder();
                 Log.d(TAG, line);
             }
             br.close();
-            object.setParseredFile(builder.toString());
+            object.setParsedFile(builder.toString());
         }
         catch (IOException e) {
             Log.e(TAG, e.getMessage());

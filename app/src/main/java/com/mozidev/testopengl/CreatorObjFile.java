@@ -19,7 +19,7 @@ public class CreatorObjFile {
         for(Float[] point:object.points){
             builder.append("v " + point[0] + " " + point[1] + " " + point[2] + "\n");
         }
-        builder.append(object.getParseredFile());
+        builder.append(object.getParsedFile());
         FileUtils.convertStringToFile(context, builder.toString());
 
     }

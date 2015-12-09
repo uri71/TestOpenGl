@@ -9,4 +9,12 @@ public class Constants {
     public static final String ARG_SITE = "ARG_SITE";
     public static final String TAG_SITE_FRAGMENT = "TAG_SITE_FRAGMENT";
     public static final String TAG_DETAILS_FRAGMENT = "TAG_DETAILS_FRAGMENT";
+    public static final String PREFERENCES = "PREFERENCES";
+    public static final String PREFS_TOKEN_TEMP = "PREFS_TOKEN_TEMP";
+    public static final String PREFS_FIRST_RUN = "PREFS_FIRST_RUN";
+    public static final String PREFS_TOKEN = "PREFS_TOKEN";
+    public static final String PREFS_SOCKET_URL = "PREFS_SOCKET_URL";
+    public static final String PREFS_WIFI_STRANGTH = "PREFS_WIFI_STRANGTH";
+    public static final String PREFS_JSON = "PREFS_JSON";
+    public static final int ID_NOTIFICATION_SOCKET_SERVICE = 1;
 }

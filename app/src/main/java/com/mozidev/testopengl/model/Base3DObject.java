@@ -20,14 +20,10 @@ public class Base3DObject implements Cloneable {
     public String comment;
     public int selectedId = -1;
     public int changedFigureId = -1;
-    private String parseredFile;
-
-
+    private String parsedFile;
 
 
     public Base3DObject(final Base3DObject object) {
-
-
         points = object.points;
         norm = object.norm;
         comment = object.comment;
@@ -170,13 +166,13 @@ public class Base3DObject implements Cloneable {
     }
 
 
-    public void setParseredFile(String s) {
-        parseredFile = s;
+    public void setParsedFile(String s) {
+        parsedFile = s;
     }
 
 
-    public String getParseredFile() {
-        return parseredFile;
+    public String getParsedFile() {
+        return parsedFile;
     }
 
 

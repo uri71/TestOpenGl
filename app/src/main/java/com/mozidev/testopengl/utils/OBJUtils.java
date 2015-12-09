@@ -25,7 +25,7 @@ public class OBJUtils {
         for(Float[] point:object.points){
             builder.append("v " + point[0] + " " + point[1] + " " + point[2] + "\n");
         }
-        builder.append(object.getParseredFile());
+        builder.append(object.getParsedFile());
         FileUtils.convertStringToFile(context, builder.toString());
 
     }
@@ -61,7 +61,7 @@ public class OBJUtils {
                 Log.d(TAG, line);
             }
             br.close();
-            object.setParseredFile(builder.toString());
+            object.setParsedFile(builder.toString());
         }
         catch (IOException e) {
             Log.e(TAG, e.getMessage());

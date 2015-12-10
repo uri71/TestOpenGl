@@ -21,6 +21,8 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
+import com.mozidev.testopengl.model.BusEvent;
+import com.mozidev.testopengl.network.SocketEvent;
 import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.opengl.Figure;
 import com.mozidev.testopengl.opengl.Line;
@@ -32,6 +34,8 @@ import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class
@@ -249,10 +253,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void resetObject(final Base3DObject object) {
         Log.d(TAG, "resetObject");
         if (object != null) {
+            int selectedId = m3DObject.selectedId;
             m3DObject = object;
+            EventBus.getDefault()
+                    .post(new BusEvent(SocketEvent.mapping_updated, selectedId, m3DObject.points.get(selectedId)[0], m3DObject.points.get(selectedId)[1]));
             addFigure();
             createMarkers();
-            setLine(true, m3DObject.selectedId);
+            setLine(true, selectedId);
         }
     }
 

@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.service.SocketService;
 
 /**

@@ -22,7 +22,6 @@ public class DownloadActivity extends BaseActivity {
         this.currentSite = currentSite;
     }
 
-
     public Site currentSite;
 
     @Override

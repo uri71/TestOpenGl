@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import retrofit.Callback;
-import retrofit.Response;
 import retrofit.Retrofit;
 
 import static com.mozidev.testopengl.Constants.*;

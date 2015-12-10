@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.mozidev.testopengl.ObjParser;
 import com.mozidev.testopengl.R;
-import com.mozidev.testopengl.model.Base3DObject;
+import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.view.MyGLSurfaceView;
 
 import butterknife.Bind;

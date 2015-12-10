@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 import com.mozidev.testopengl.Constants;
 
 import java.util.List;
@@ -63,9 +64,9 @@ public class WorkLog extends Model {
     public static List<WorkLog> getEntityByTime(long time) {
         List<WorkLog> list;
         try {
-            From from = new Select().from(WorkLog.class);
-            if (from.exists()) list = from.where("time >= ?", time).execute();
-            else return null;
+            list = SQLiteUtils.rawQuery(WorkLog.class,
+                    "SELECT * from WorkLog where time >= " + time,
+                    null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -80,9 +81,9 @@ public class WorkLog extends Model {
     public static List<WorkLog> getAll(){
         List<WorkLog> list;
         try {
-            From from = new Select().from(WorkLog.class);
-            if (from.exists()) list = from.execute();
-            else return null;
+            list = SQLiteUtils.rawQuery(WorkLog.class,
+                    "SELECT * from WorkLog ",
+                    null);
         }
         catch (Exception e) {
             e.printStackTrace();

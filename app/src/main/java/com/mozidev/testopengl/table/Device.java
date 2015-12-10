@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,9 +117,9 @@ public class Device extends Model {
     public static List<Device> getAll(){
         List<Device> list;
         try {
-            From from = new Select().from(Device.class);
-            if (from.exists()) list = from.execute();
-            else return null;
+            list = SQLiteUtils.rawQuery(Device.class,
+                    "SELECT * from Device",
+                    null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -133,9 +134,9 @@ public class Device extends Model {
         List<String> udids = new ArrayList<>();
         List<Device> list;
         try {
-            From from = new Select().from(Device.class);
-            if (from.exists()) list = from.execute();
-            else return null;
+            list = SQLiteUtils.rawQuery(Device.class,
+                    "SELECT udid from Device",
+                    null);
             for (Device d: list){
                 udids.add(d.udid);
             }

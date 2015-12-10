@@ -16,10 +16,10 @@
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="96dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/login_logo"/>
 
 
@@ -33,10 +33,10 @@
             android:layout_above="@+id/et_container"
             android:gravity="center"
             android:text="Sign in to your account"
-            android:textSize="65px"
+            android:textSize="16dp"
             android:textColor="@color/colorLoginText"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="8dp"/>
 
 
 
@@ -59,10 +59,10 @@
                     android:gravity="center"
                     android:hint="Enter Site I.D."
                     android:imeOptions="actionNext"
-                    android:paddingBottom="24dp"
-                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:textSize="72px"
+                    android:textSize="16dp"
                     android:textColorHint="@color/colorLoginText"/>
 
                 <View
@@ -80,10 +80,10 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:lines="1"
-                    android:paddingBottom="24dp"
-                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:textSize="72px"
+                    android:textSize="16dp"
                     android:textColorHint="@color/colorLoginText"/>
             </LinearLayout>
 
@@ -93,16 +93,16 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/btn_signin_selector"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="36dp"
             android:paddingRight="36dp"
             android:text="Sign in"
             android:textAllCaps="true"
-            android:textSize="65px"
+            android:textSize="24px"
             android:textColor="@color/colorLoginButtonText"
             android:textStyle="bold"/>
 

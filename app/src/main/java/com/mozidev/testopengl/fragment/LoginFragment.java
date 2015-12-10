@@ -20,10 +20,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.mozidev.testopengl.Constants;
 import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.api.ApiHelper;
+import com.mozidev.testopengl.network.JsonField;
 import com.mozidev.testopengl.network.Message;
 import com.mozidev.testopengl.utils.Connectivity;
+import com.mozidev.testopengl.utils.PrefUtils;
 import com.norbsoft.typefacehelper.TypefaceHelper;
 
 import org.json.JSONObject;
@@ -39,6 +45,9 @@ import java.util.TimerTask;
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by y.storchak on 28.07.15.
@@ -101,7 +110,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
         password.setOnEditorActionListener(this);
         login.setOnEditorActionListener(this);
         setupRings();
-        TypefaceHelper.typeface(view);
+        //TypefaceHelper.typeface(view);
     }
 
 
@@ -130,9 +139,83 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
                 }
             }, mConnectionAlertTimeout);
         }
+        /*ApiHelper.login(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Response<JSONObject> response, Retrofit retrofit) {
+                Log.d(TAG, response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.getMessage());
+
+            }
+        }, getActivity(), login.getText().toString(), password.getText().toString());*/
+        loginToService();
     }
 
 
+    private void loginToService() {
+        showProgressView(true, false, null);
+        String name = login.getText().toString();
+        String pass = password.getText().toString();
+        String udid = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+        String url = Constants.BASE_API_URL+"/api/login";
+            /* String devName = android.os.Build.MODEL;
+            List <Integer> screen = ScreenUtils.getScreenSizePixels(getActivity());
+            int width = screen.get(0);
+            int height = screen.get(1);*/
+        AQuery aq = new AQuery(getActivity());
+        Map<String, String> params = new HashMap<>();
+        params.put("username", name);
+        params.put("password", pass);
+        params.put("mapper", "1");
+        params.put("udid", udid);
+        //params.put("device_name", devName);
+        // params.put("screen_width", String.valueOf(width));
+        // params.put("screen_height", String.valueOf(height));
+        aq.ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
+            @Override
+            public void callback(String url, JSONObject json, AjaxStatus status) {
+                if (json != null) {
+                    Log.d(TAG, json.toString());
+                    JSONObject data = json.optJSONObject(JsonField.data);
+                    boolean isError = json.optBoolean(JsonField.isError);
+                    if (data != null && !data.isNull(JsonField.newDevice)) {
+                        newDevice = data.optBoolean(JsonField.newDevice);
+                        Log.d(TAG, "loginToService: it's the  new device!");
+                        if (!newDevice && PrefUtils.getDeviceName(getActivity()).isEmpty()) {
+                            PrefUtils.setDeviceName(getActivity(), "device has name");
+                        }
+                    }
+                    String message = json.optString(JsonField.errorMsg);
+                    if (!isError && data != null && !data.toString().isEmpty()) {
+                        String authToken = data.optString(JsonField.authToken);
+                        String socketUrl = data.optString(JsonField.socketUrl);
+                        PrefUtils.setToken(getActivity(), authToken);
+                        PrefUtils.setSoketUrl(getActivity(), socketUrl);
+                        //  DisplayMapper.getSocketService().connect();
+                        EventBus.getDefault().post(new BusEvent(null, EventsCommand.CONNECT));
+                        DisplayMapper.getInstance().connectKioskSocket();
+                        Log.d(TAG, "token obtain" + authToken);
+                        WorkLog log = new WorkLog(new Date().getTime(), "login to server successful ");
+                        log.save();
+                        showProgressView(false, true, null);
+                    } else if (isError) {
+                        showProgressView(false, false, message);
+                        Log.e(TAG, "ERROR authentication");
+                        WorkLog log = new WorkLog(new Date().getTime(), "login to server fail " + message);
+                        log.save();
+                    }
+                } else {
+                    showProgressView(false, false, null);
+                    Log.e(TAG, "ERROR ajax");
+                    WorkLog log = new WorkLog(new Date().getTime(), "login to server fail ajax error");
+                    log.save();
+                }
+            }
+        });
+    }
 
 
 

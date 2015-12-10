@@ -13,7 +13,8 @@ public class SocketEvent {
     public static String authenticate = "authenticate";
     public static String authenticateMapping = "device_connecting";
     public static String status = "status";
-    public static String commandFeed = "command";   //the value may be changed
+    public static String commandFeed = "command";//the value may be changed
+    public static final String mappingStart = "mappingStart";
     public static final String mapping_init_return = "mapping_init_return";
     public static final String mapping_updated = "mapping_updated";
     public static final String finished_mapping = "finished_mapping";
@@ -21,4 +22,5 @@ public class SocketEvent {
     public static final String start_mapping = "start_mapping";
     public static final String ready_mapping = "ready_mapping";
     public static final String error_mapping = "error_mapping";
+    public static final String deviceStatus = "deviceStatus";
 }

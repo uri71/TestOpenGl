@@ -5,11 +5,11 @@ package com.mozidev.testopengl.model;
  */
 public class AuthToken {
     private String authToken;
-    private String udid;
+    private String mappingUdid;
 
 
     public AuthToken(String authToken, String udid) {
         this.authToken = authToken;
-        this.udid = udid;
+        this.mappingUdid = udid;
     }
 }

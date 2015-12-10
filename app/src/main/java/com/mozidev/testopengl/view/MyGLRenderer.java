@@ -21,7 +21,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
-import com.mozidev.testopengl.model.BusEvent;
+import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.SocketEvent;
 import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.opengl.Figure;

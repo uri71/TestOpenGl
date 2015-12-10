@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.network;
 
 /**
  * Created by y.storchak on 09.12.15.

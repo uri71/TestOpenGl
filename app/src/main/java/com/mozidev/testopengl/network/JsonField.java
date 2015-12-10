@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.network;
 
 /**
  * Created by y.storchak on 07.08.15.
@@ -41,4 +41,6 @@ public interface JsonField {
     String created_at = "created_at";
     String updated_at = "updated_at";
     String exposure = "exposure";
+    String udidList = "udidList";
+    String mappingUdid = "mappingUdid";
 }

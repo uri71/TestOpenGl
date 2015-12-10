@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.table;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;

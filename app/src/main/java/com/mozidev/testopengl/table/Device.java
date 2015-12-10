@@ -1,4 +1,4 @@
-package com.mozidev.testopengl.model;
+package com.mozidev.testopengl.table;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -7,6 +7,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,6 +127,28 @@ public class Device extends Model {
 
         return list;
     }
+
+
+    public static List<String> getUdids(){
+        List<String> udids = new ArrayList<>();
+        List<Device> list;
+        try {
+            From from = new Select().from(Device.class);
+            if (from.exists()) list = from.execute();
+            else return null;
+            for (Device d: list){
+                udids.add(d.udid);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return udids;
+    }
+
+
 
 }
 

@@ -1,12 +1,12 @@
 package com.mozidev.testopengl.service;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.mozidev.testopengl.Constants;
-import com.mozidev.testopengl.model.JsonField;
-import com.mozidev.testopengl.model.SocketEvent;
+import com.mozidev.testopengl.network.Command;
+import com.mozidev.testopengl.network.JsonField;
+import com.mozidev.testopengl.network.SocketEvent;
 import com.mozidev.testopengl.utils.JsonUtils;
 import com.mozidev.testopengl.utils.PrefUtils;
 
@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import io.socket.client.IO;
@@ -37,10 +36,12 @@ public class SocketConnection {
 
     public SocketConnection(Context context) {
         mContext = context;
+        EventBus.getDefault().register(this);
     }
 
+
     public void connect(){
-        EventBus.getDefault().register(this);
+
         IO.Options options = new IO.Options();
         options.forceNew = true;
         options.reconnection = true;
@@ -80,7 +81,6 @@ public class SocketConnection {
                     return;
                 }
                 isAuthenticated = true;
-                //subscribableSocketState.onSocketStateChanged(null);
                 JSONObject answer = (JSONObject) args[0];
 
                 socketToken = answer.optString(JsonField.auzToken);
@@ -236,7 +236,19 @@ public class SocketConnection {
 
 
     private void determineCommand(JSONObject request) {
-
+        String commandName = request.optString(JsonField.name);
+        switch (commandName){
+            case Command.deviceStatus:
+            break;
+            case Command.disconnectDevice:
+                break;
+            case Command.readyMapping:
+                break;
+            case Command.errorMapping:
+                break;
+            case Command.mapping_timeout:
+                break;
+        }
     }
 
 
@@ -253,6 +265,47 @@ public class SocketConnection {
         }
     }
 
+    private void mappingInit(String udid, String url) {
+        Log.d(TAG, "socketConnect()");
+
+        try {
+            JSONObject object = JsonUtils.getMappingInitJson(mContext, token, udid, url);
+            if(object != null)socket.emit(SocketEvent.mapping_start, object);
+            Log.d(TAG, "socketConnect auth json = " + object.toString());
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getAllDevicesStatus(){
+        Log.d(TAG, "getDeviceList()");
+
+        try {
+            JSONObject object = JsonUtils.getAllDeviceStatusJson(mContext, token);
+            if(object != null)socket.emit(SocketEvent.deviceStatus, object);
+            Log.d(TAG, "socketConnect auth json = " + object.toString());
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getDeviceStatus(String udid){
+        Log.d(TAG, "getDeviceList()");
+
+        try {
+            JSONObject object = JsonUtils.getDeviceStatusJson(mContext, token, udid);
+            if(object != null)socket.emit(SocketEvent.deviceStatus, object);
+            Log.d(TAG, "socketConnect auth json = " + object.toString());
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void disconnect(){
         if(socket != null) {
@@ -260,6 +313,10 @@ public class SocketConnection {
             socket.disconnect();
             socket = null;
         }
+    }
+
+    public void destroy(){
+        disconnect();
         EventBus.getDefault().unregister(this);
     }
 }

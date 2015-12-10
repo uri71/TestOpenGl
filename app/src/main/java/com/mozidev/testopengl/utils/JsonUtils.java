@@ -13,6 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.mozidev.testopengl.model.AuthToken;
+import com.mozidev.testopengl.model.DeviceStatus;
+import com.mozidev.testopengl.model.MappingInit;
+import com.mozidev.testopengl.table.Device;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,5 +112,36 @@ public class JsonUtils {
 
 
 
+    @NonNull
+    public static JSONObject getAllDeviceStatusJson(Context context, String token) throws JSONException {
+        List <String> udids = Device.getUdids();
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(new DeviceStatus(Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID), token, udids));
+        JSONObject js =  new JSONObject(s);
+        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        return js;
+    }
 
+    @NonNull
+    public static JSONObject getDeviceStatusJson(Context context, String token, String udid) throws JSONException {
+        List <String> udids = new ArrayList<>();
+        udids.add(udid);
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(new DeviceStatus(Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID), token, udids));
+        JSONObject js =  new JSONObject(s);
+        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        return js;
+    }
+
+
+    public static JSONObject getMappingInitJson(Context mContext, String token, String udid, String url) throws JSONException {
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(new MappingInit(token, Settings.Secure.getString(mContext.getContentResolver(),
+                Settings.Secure.ANDROID_ID), udid, url));
+        JSONObject js =  new JSONObject(s);
+        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        return js;
+    }
 }

@@ -9,6 +9,7 @@ public class MappingInit {
     private String mappingUdid;
     private String udid;
     private String url;
+   // private String type = "mapping";
 
 
     public MappingInit(String authToken, String mappingUdid, String udid, String url) {

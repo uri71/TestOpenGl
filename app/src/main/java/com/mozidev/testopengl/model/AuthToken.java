@@ -6,6 +6,7 @@ package com.mozidev.testopengl.model;
 public class AuthToken {
     private String authToken;
     private String mappingUdid;
+    //private int mapper = 1;
 
 
     public AuthToken(String authToken, String udid) {

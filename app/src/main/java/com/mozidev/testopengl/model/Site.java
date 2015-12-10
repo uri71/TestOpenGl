@@ -14,6 +14,9 @@ public class Site implements Serializable{
     public boolean status;
     public boolean isFile;
 
+    public Site() {
+    }
+
 
     public Site(String name, String udid, String organisation, boolean status, boolean isFile, String time) {
         this.name = name;
@@ -22,9 +25,5 @@ public class Site implements Serializable{
         this.status = status;
         this.isFile = isFile;
         created = time;
-    }
-
-
-    public Site() {
     }
 }

@@ -23,4 +23,8 @@ public interface Constants {
     String PASSWORD_KEY = "password";
     String TOKEN_KEY = "token";
     int MAX_ENTRIES_IN_LOG = 1024;
+    String PREFS_DEVICE_ID = "PREFS_DEVICE_ID";
+    String PREFS_DEVICE_NAME = "PREFS_DEVICE_NAME";
+    String PREFS_HOST = "PREFS_HOST";
+    String PREFS_PORT = "PREFS_PORT";
 }

@@ -37,6 +37,7 @@ public class SocketConnection {
     public SocketConnection(Context context) {
         mContext = context;
         EventBus.getDefault().register(this);
+        connect();
     }
 
 
@@ -45,7 +46,7 @@ public class SocketConnection {
         IO.Options options = new IO.Options();
         options.forceNew = true;
         options.reconnection = true;
-        String uri = "";//// TODO: 09.12.15
+        String uri = "http://54.229.188.255/";//// TODO: 09.12.15
         if (token.isEmpty()) {
             token = PrefUtils.getToken(mContext);
             if (token.isEmpty()) {
@@ -270,7 +271,7 @@ public class SocketConnection {
 
         try {
             JSONObject object = JsonUtils.getMappingInitJson(mContext, token, udid, url);
-            if(object != null)socket.emit(SocketEvent.mapping_start, object);
+            if(object != null)socket.emit(SocketEvent.mappingStart, object);
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }
         catch (JSONException e) {

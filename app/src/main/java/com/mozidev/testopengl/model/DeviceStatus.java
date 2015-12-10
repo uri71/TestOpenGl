@@ -18,6 +18,8 @@ public class DeviceStatus {
     @SerializedName(JsonField.udidList)
     public List<String> udids = new ArrayList<>();
 
+   // private String type = "mapping";
+
 
     public DeviceStatus( String token, String mappingUdid, List<String> udids) {
         this.token = token;

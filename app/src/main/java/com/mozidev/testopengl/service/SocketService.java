@@ -48,7 +48,7 @@ public class SocketService extends Service {
     @Override
     public void onDestroy() {
         stopForeground(true);
-        mServiceHandler.getConnection().disconnect();
+        mServiceHandler.getConnection().destroy();
         super.onDestroy();
     }
 

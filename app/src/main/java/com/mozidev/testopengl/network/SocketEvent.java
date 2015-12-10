@@ -23,4 +23,5 @@ public interface SocketEvent {
     String ready_mapping = "ready_mapping";
     String error_mapping = "error_mapping";
     String deviceStatus = "deviceStatus";
+    String mapping_start = "mapping_start";
 }

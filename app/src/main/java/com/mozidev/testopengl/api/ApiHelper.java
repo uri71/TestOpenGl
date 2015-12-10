@@ -30,23 +30,23 @@ public class ApiHelper {
             .build()
             .create(ApiConnection.class);
 
-    public static void login(Callback<JSONObject> callback, Context context){
-        sp = context.getSharedPreferences("DM", Context.MODE_PRIVATE);
+    public static void login(Callback<JSONObject> callback, Context context, String login, String password){
+        sp = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         String udid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         Map<String, String> params = new HashMap<>();
-        params.put(LOGIN_KEY, sp.getString("login", ""));
-        params.put(PASSWORD_KEY, sp.getString("password", ""));
+        params.put(LOGIN_KEY, login);
+        params.put(PASSWORD_KEY, password);
+        params.put(MAPPER_KEY, "1");
         params.put(UDID_KEY, udid);
         connection.login(params).enqueue(callback);
-
     }
 
     public static void checkPermissions(Callback<JSONObject> callback, Context context){
-        sp = context.getSharedPreferences("DM", Context.MODE_PRIVATE);
+        sp = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         String udid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         Map<String, String> params = new HashMap<>();
         params.put(UDID_KEY, udid);
-        params.put(TOKEN_KEY, sp.getString("token", ""));
+        params.put(TOKEN_KEY, sp.getString(PREFS_TOKEN, ""));
         connection.checkPermissions(params).enqueue(callback);
     }
 
@@ -54,7 +54,7 @@ public class ApiHelper {
         String udid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         Map<String, String> params = new HashMap<>();
         params.put(UDID_KEY, udid);
-        params.put(TOKEN_KEY, sp.getString("token", ""));
+        params.put(TOKEN_KEY, sp.getString(PREFS_TOKEN, ""));
         connection.devList(params).enqueue(callback);
     }
 

@@ -17,10 +17,11 @@ public interface Constants {
     String PREFS_WIFI_STRENGTH = "PREFS_WIFI_STRENGTH";
     String PREFS_JSON = "PREFS_JSON";
     int ID_NOTIFICATION_SOCKET_SERVICE = 1;
-    String BASE_API_URL = "https://api.displaymapper.com";
+    String BASE_API_URL = "http://54.229.188.255";
     String UDID_KEY = "udid";
     String LOGIN_KEY = "login";
     String PASSWORD_KEY = "password";
     String TOKEN_KEY = "token";
+    String MAPPER_KEY = "type";
     int MAX_ENTRIES_IN_LOG = 1024;
 }

@@ -15,13 +15,13 @@ import retrofit.http.QueryMap;
  */
 public interface ApiConnection {
 
-    @POST("/login")
+    @POST("/api/login")
     Call<JSONObject> login(@QueryMap Map<String, String> params);
 
-    @GET("/check")
+    @GET("/api/check")
     Call<JSONObject> checkPermissions(@QueryMap Map<String, String> params);
 
-    @GET("/list")
+    @GET("/api/list")
     Call<JSONObject> devList(@QueryMap Map<String, String> params);
 
 }

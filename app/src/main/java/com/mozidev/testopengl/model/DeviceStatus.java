@@ -15,15 +15,16 @@ public class DeviceStatus {
     public String token;
     @SerializedName(JsonField.mappingUdid)
     public String mappingUdid;
-    @SerializedName(JsonField.udidList)
-    public List<String> udids = new ArrayList<>();
+    @SerializedName(JsonField.name)
+    public String name;
+    @SerializedName(JsonField.data)
+    public  DataDeviceStatus data;
 
-   // private String type = "mapping";
 
-
-    public DeviceStatus( String token, String mappingUdid, List<String> udids) {
+    public DeviceStatus( String token, String mappingUdid, String name,DataDeviceStatus data) {
         this.token = token;
         this.mappingUdid = mappingUdid;
-        this.udids = udids;
+        this.name = name;
+        this.data = data;
     }
 }

@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 import com.mozidev.testopengl.network.BusEvent;
+import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.network.SocketEvent;
 import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.opengl.Figure;
@@ -256,7 +257,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             int selectedId = m3DObject.selectedId;
             m3DObject = object;
             EventBus.getDefault()
-                    .post(new BusEvent(SocketEvent.mapping_updated, selectedId, m3DObject.points.get(selectedId)[0], m3DObject.points.get(selectedId)[1]));
+                    .post(new BusEvent(Command.mappingUpdateGL, selectedId, m3DObject.points.get(selectedId)[0], m3DObject.points.get(selectedId)[1]));
             addFigure();
             createMarkers();
             setLine(true, selectedId);

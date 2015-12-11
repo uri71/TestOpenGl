@@ -13,8 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.mozidev.testopengl.model.AuthToken;
+import com.mozidev.testopengl.model.DataDeviceStatus;
+import com.mozidev.testopengl.model.DataMappingInit;
+import com.mozidev.testopengl.model.DataMappingUpdate;
 import com.mozidev.testopengl.model.DeviceStatus;
+import com.mozidev.testopengl.model.MappingFinish;
 import com.mozidev.testopengl.model.MappingInit;
+import com.mozidev.testopengl.model.MappingUpdate;
+import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.table.Device;
 
 import org.json.JSONArray;
@@ -95,53 +101,62 @@ public class JsonUtils {
     }
 
 
-
-
     @NonNull
-    public static JSONObject getSocketAuthJson(Context context, String token) throws JSONException {
+    public static JSONObject getSocketAuthJson(Context context, String token, String targetUdid) throws JSONException {
 
         Gson gson = new GsonBuilder().create();
-        String s = gson.toJson(new AuthToken(token, Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID)));
+        String s = gson.toJson(new AuthToken(token, targetUdid));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        Log.d(TAG, "getSocketAuthJson GSON" + s.toString());
         return js;
     }
 
 
-
-
-
     @NonNull
-    public static JSONObject getAllDeviceStatusJson(Context context, String token) throws JSONException {
+    public static JSONObject getAllDeviceStatusJson(Context context, String token, String targetUdid) throws JSONException {
         List <String> udids = Device.getUdids();
         Gson gson = new GsonBuilder().create();
-        String s = gson.toJson(new DeviceStatus(Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID), token, udids));
+        String s = gson.toJson(new DeviceStatus(targetUdid, token, Command.deviceStatus, new DataDeviceStatus(udids)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        Log.d(TAG, "getAllDeviceStatusJson GSON" + s.toString());
         return js;
     }
 
     @NonNull
-    public static JSONObject getDeviceStatusJson(Context context, String token, String udid) throws JSONException {
+    public static JSONObject getDeviceStatusJson(Context context, String token, String udid, String targetUdid) throws JSONException {
         List <String> udids = new ArrayList<>();
         udids.add(udid);
         Gson gson = new GsonBuilder().create();
-        String s = gson.toJson(new DeviceStatus(Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID), token, udids));
+        String s = gson.toJson(new DeviceStatus(targetUdid, token, Command.deviceStatus, new DataDeviceStatus(udids)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        Log.d(TAG, "getDeviceStatusJson GSON" + s.toString());
         return js;
     }
 
 
-    public static JSONObject getMappingInitJson(Context mContext, String token, String udid, String url) throws JSONException {
+    public static JSONObject getMappingInitJson(Context mContext, String token, String name, String url, String targetUdid) throws JSONException {
         Gson gson = new GsonBuilder().create();
-        String s = gson.toJson(new MappingInit(token, Settings.Secure.getString(mContext.getContentResolver(),
-                Settings.Secure.ANDROID_ID), udid, url));
+        String s = gson.toJson(new MappingInit(token, targetUdid, name, new DataMappingInit(url)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getTokenRequest GSON" + s.toString());
+        Log.d(TAG, "getMappingInitJson GSON" + s.toString());
         return js;
+    }
+
+
+    public static JSONObject getMappingUpdateJson(Context mContext, String token, String name, int v, float x, float y, String targetUdid) throws JSONException {
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(new MappingUpdate(token, targetUdid, name, new DataMappingUpdate(v, x, y)));
+        JSONObject js =  new JSONObject(s);
+        Log.d(TAG, "getMappingUpdateJson GSON" + s.toString());
+        return js;
+    }
+
+
+    public static JSONObject getMappingFinishJson(Context mContext, String token, String name, String targetUdid) throws JSONException{
+        Gson gson = new GsonBuilder().create();
+        String s = gson.toJson(new MappingFinish(token, targetUdid, Command.mappingFinishGL));
+        JSONObject js =  new JSONObject(s);
+        Log.d(TAG, "getMappingFinishJson GSON" + s.toString());
+        return null;
     }
 }

@@ -19,7 +19,7 @@ public class SplashActivity extends BaseActivity {
                 startActivity(new Intent(SplashActivity.this, DownloadActivity.class));
                 SplashActivity.this.finish();
             }
-        }, 3000);
+        }, 1000);
     }
 
 }

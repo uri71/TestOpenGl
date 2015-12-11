@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.mozidev.testopengl.Constants;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.network.JsonField;
@@ -34,6 +33,7 @@ public class SocketConnection {
     private Context mContext;
     private boolean isAuthenticated;
     private String token;
+    private String targetUdid = "659ed518795dac05";
 
 
     public SocketConnection(Context context) {
@@ -42,12 +42,22 @@ public class SocketConnection {
         connect();
     }
 
-    public void onEventAsync(BusEvent event) {
+
+    public void onEventMainThread(BusEvent event) {
         Log.d(TAG, event.command);
         switch (event.command) {
+            case Command.mappingStartGL:
+                mappingStart(targetUdid, "http://www.ex.ua/get/210726622");
+                break;
+            case Command.mappingUpdateGL:
+                mappingUpdate(targetUdid, event.id, event.x, event.y);
+                break;
+            case Command.mappingFinishGL:
+                mappingFinish(targetUdid);
+                break;
         }
-
     }
+
 
     public void connect(){
         Log.d(TAG, "connect()");
@@ -55,7 +65,10 @@ public class SocketConnection {
         IO.Options options = new IO.Options();
         options.forceNew = true;
         options.reconnection = true;
-        String uri = "http://54.229.188.255/";//// TODO: 09.12.15
+        options.timeout = 60000;
+        options.reconnectionDelay = 1000;
+        String uri = PrefUtils.getSoketUrl(mContext);//// TODO: 09.12.15
+        Log.d(TAG, "socket uri = " + uri);
 
         if (TextUtils.isEmpty(token)) {
             token = PrefUtils.getToken(mContext);
@@ -76,8 +89,8 @@ public class SocketConnection {
             public void call(Object... args) {
 
                 Log.d(TAG, "SOCKET_CONNECT");
-
-                socketConnect();
+                socket.emit(SocketEvent.BACK_connect);
+                //socketConnect();
             }
         })/*.on(SocketEvent.authenticated, new Emitter.Listener() {
 
@@ -135,7 +148,7 @@ public class SocketConnection {
                 isAuthenticated = false;
                 Log.d(TAG, "SOCKET_AUTHENTICATED" + args[0].toString());
                 socketToken = "";
-                socketConnect();
+                //socketConnect();
 
             }
 
@@ -157,7 +170,7 @@ public class SocketConnection {
 
             @Override
             public void call(Object... args) {
-                Log.d(TAG, "SOCKET_DISCONNECT");
+                Log.d(TAG, "SOCKET_DISCONNECT" + args[0].toString());
                 isAuthenticated = false;
                 socketToken = "";
                 try {
@@ -184,7 +197,7 @@ public class SocketConnection {
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-                socketConnect();
+                //socketConnect();
 
             }
         }).on(Socket.EVENT_CONNECT_TIMEOUT, new Emitter.Listener() {
@@ -200,7 +213,7 @@ public class SocketConnection {
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-                socketConnect();
+               // socketConnect();
 
             }
         }).on(Socket.EVENT_RECONNECT, new Emitter.Listener() {
@@ -253,11 +266,11 @@ public class SocketConnection {
             break;
             case Command.disconnectDevice:
                 break;
-            case Command.readyMapping:
+            case Command.readyMappingGL:
                 break;
-            case Command.errorMapping:
+            case Command.errorMappingGL:
                 break;
-            case Command.mapping_timeout:
+            case Command.mappingTimeoutGL:
                 break;
         }
     }
@@ -266,11 +279,25 @@ public class SocketConnection {
     private void socketConnect() {
         Log.d(TAG, "socketConnect()");
 
-        try {
-            JSONObject object = JsonUtils.getSocketAuthJson(mContext, token);
+
+       /* try {
+            JSONObject object = JsonUtils.getSocketAuthJson(mContext, token, targetUdid);
             if(object != null){
-                socket.emit(SocketEvent.BACK_connect, object);
+                socket.emit(SocketEvent.BACK_connect);
             }
+            Log.d(TAG, "socketConnect auth json = " + object.toString());
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    private void mappingStart(String udid, String url) {
+        Log.d(TAG, "socketConnect()");
+
+        try {
+            JSONObject object = JsonUtils.getMappingInitJson(mContext, token, Command.mappingStartGL, url, targetUdid);
+            if(object != null)socket.emit(SocketEvent.BACK_command, object);
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }
         catch (JSONException e) {
@@ -278,12 +305,27 @@ public class SocketConnection {
         }
     }
 
-    private void mappingInit(String udid, String url) {
+
+    private void mappingFinish(String udid) {
         Log.d(TAG, "socketConnect()");
 
         try {
-            JSONObject object = JsonUtils.getMappingInitJson(mContext, token, udid, url);
-            if(object != null)socket.emit(SocketEvent.mappingStart, object);
+            JSONObject object = JsonUtils.getMappingFinishJson(mContext, token, Command.mappingFinishGL, targetUdid);
+            if(object != null)socket.emit(SocketEvent.BACK_command, object);
+            Log.d(TAG, "socketConnect auth json = " + object.toString());
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void mappingUpdate(String udid, int v, float x, float y) {
+        Log.d(TAG, "socketConnect()");
+
+        try {
+            JSONObject object = JsonUtils.getMappingUpdateJson(mContext, token, Command.mappingUpdateGL, v, x, y, targetUdid);
+            if(object != null)socket.emit(SocketEvent.BACK_command, object);
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }
         catch (JSONException e) {
@@ -296,7 +338,7 @@ public class SocketConnection {
         Log.d(TAG, "getDeviceList()");
 
         try {
-            JSONObject object = JsonUtils.getAllDeviceStatusJson(mContext, token);
+            JSONObject object = JsonUtils.getAllDeviceStatusJson(mContext, token, targetUdid);
             if(object != null)socket.emit(SocketEvent.deviceStatus, object);
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }
@@ -310,7 +352,7 @@ public class SocketConnection {
         Log.d(TAG, "getDeviceList()");
 
         try {
-            JSONObject object = JsonUtils.getDeviceStatusJson(mContext, token, udid);
+            JSONObject object = JsonUtils.getDeviceStatusJson(mContext, token, udid, targetUdid);
             if(object != null)socket.emit(SocketEvent.deviceStatus, object);
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }

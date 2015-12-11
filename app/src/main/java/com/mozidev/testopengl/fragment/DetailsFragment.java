@@ -19,6 +19,9 @@ import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.activity.DownloadActivity;
 import com.mozidev.testopengl.activity.MappingActivity;
 import com.mozidev.testopengl.model.Site;
+import com.mozidev.testopengl.network.BusEvent;
+import com.mozidev.testopengl.network.Command;
+import com.mozidev.testopengl.network.SocketEvent;
 import com.mozidev.testopengl.service.DownloadService;
 import com.mozidev.testopengl.service.SocketService;
 import com.mozidev.testopengl.utils.FileUtils;
@@ -26,6 +29,7 @@ import com.mozidev.testopengl.utils.FileUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,6 +118,7 @@ public class DetailsFragment extends BaseFragment {
 
     @OnClick(R.id.btn_mapping)
    public void mapping() {
+        EventBus.getDefault().post(new BusEvent(Command.mappingStartGL));
         startActivity(new Intent(getActivity(), MappingActivity.class));
     }
 

@@ -28,8 +28,12 @@ import android.widget.Toast;
 
 import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.network.BusEvent;
+import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.service.SocketService;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -282,6 +286,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
 
     private void saveMapping() {
        // mRenderer.stop();
+        EventBus.getDefault().post(new BusEvent(Command.mappingFinishGL));
         getContext().stopService(new Intent(this.getContext(), SocketService.class));
         new CreatorObjFile().create(getContext(), mObjects);
 

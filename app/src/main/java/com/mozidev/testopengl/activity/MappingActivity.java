@@ -46,6 +46,8 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
      ImageButton buttonHide;
     @Bind(R.id.btn_container)
      RelativeLayout btnContainer;
+    @Bind(R.id.button_save)
+     ImageButton buttonSave;
 
     private Animation animation1;
     private Animation animation2;
@@ -53,7 +55,7 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
     private MyGLSurfaceView mGLView;
 
     private Base3DObject object;
-    private ImageButton buttonSave;
+
 
 
     @Override

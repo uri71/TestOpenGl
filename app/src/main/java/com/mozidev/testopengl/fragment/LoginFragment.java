@@ -136,6 +136,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
     @OnClick(R.id.send)
     public void send() {
         hideKeyboard();
+        showProgressView(true, false, null);
         if (Connectivity.isConnected(getActivity())) {
             sendUserData();
         } else {
@@ -161,6 +162,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
                             Log.d(TAG, wrapper.data.socketUrl);
                             PrefUtils.setToken(getContext(), wrapper.data.authToken);
                             Log.d(TAG, wrapper.data.authToken);
+                            showProgressView(false, true, null);
                         }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -170,6 +172,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.getMessage());
+                showProgressView(false, false, t.getMessage());
             }
         }, getActivity(), login.getText().toString(), password.getText().toString());
     }

@@ -4,18 +4,16 @@ package com.mozidev.testopengl.model;
 /**
  * Created by y.storchak on 10.12.15.
  */
-public class MappingInit {
+public class MappingFinish {
     private String authToken;
     private String udid;
     private String name;
-    private DataMappingInit data;
    // private String type = "mapping";
 
 
-    public MappingInit(String authToken,  String udid, String name, DataMappingInit data) {
+    public MappingFinish(String authToken, String udid, String name) {
         this.authToken = authToken;
         this.udid = udid;
         this.name = name;
-        this.data = data;
     }
 }

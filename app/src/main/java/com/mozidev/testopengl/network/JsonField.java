@@ -43,4 +43,8 @@ public interface JsonField {
     String exposure = "exposure";
     String udidList = "udidList";
     String mappingUdid = "mappingUdid";
+    String objFileUrl = "objFileUrl";
+    String v = "v";
+    String x = "x";
+    String y = "y";
 }

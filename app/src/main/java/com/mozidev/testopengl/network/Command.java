@@ -12,11 +12,6 @@ public interface Command {
     String statistics = "statistics";
     String showImage = "showImage";
     String showImageFinish = "showImageFinish";
-    String mappingInit = "mappingInit";
-    String mapping_init_return = "mapping_init_return";
-    String mapping_updated = "mapping_updated";
-    String mapping_finished = "finished_mapping";
-    String mapping_timeout = "mapping_timeout";
     String disconnectDevice = "disconnectDevice";
     String projectorUpdate = "projectorUpdate";
 
@@ -32,6 +27,10 @@ public interface Command {
     String restartKioskService = "restartKioskService";
     String restartSocketService = "restartSocketService";
     String deviceStatus = "deviceStatus";
-    String readyMapping = "readyMapping";
-    String errorMapping = "errorMapping";
+    String readyMappingGL = "readyMappingGL";
+    String errorMappingGL = "errorMappingGL";
+    String mappingUpdateGL = "mappingUpdateGL";
+    String mappingStartGL = "mappingStartGL";
+    String mappingTimeoutGL = "mappingTimeoutGL";
+    String mappingFinishGL = "mappingFinishGL";
 }

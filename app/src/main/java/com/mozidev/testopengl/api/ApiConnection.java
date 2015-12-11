@@ -1,5 +1,7 @@
 package com.mozidev.testopengl.api;
 
+import com.squareup.okhttp.ResponseBody;
+
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -16,12 +18,12 @@ import retrofit.http.QueryMap;
 public interface ApiConnection {
 
     @POST("/api/login")
-    Call<JSONObject> login(@QueryMap Map<String, String> params);
+    Call<ResponseBody> login(@QueryMap Map<String, String> params);
 
     @GET("/api/check")
-    Call<JSONObject> checkPermissions(@QueryMap Map<String, String> params);
+    Call<ResponseBody> checkPermissions(@QueryMap Map<String, String> params);
 
     @GET("/api/list")
-    Call<JSONObject> devList(@QueryMap Map<String, String> params);
+    Call<ResponseBody> devList(@QueryMap Map<String, String> params);
 
 }

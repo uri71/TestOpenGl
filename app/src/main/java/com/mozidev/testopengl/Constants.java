@@ -19,10 +19,10 @@ public interface Constants {
     int ID_NOTIFICATION_SOCKET_SERVICE = 1;
     String BASE_API_URL = "http://54.229.188.255";
     String UDID_KEY = "udid";
-    String LOGIN_KEY = "login";
+    String USERNAME_KEY = "username";
     String PASSWORD_KEY = "password";
     String TOKEN_KEY = "token";
-    String MAPPER_KEY = "type";
+    String MAPPER_KEY = "mapper";
     int MAX_ENTRIES_IN_LOG = 1024;
     String PREFS_DEVICE_ID = "PREFS_DEVICE_ID";
     String PREFS_DEVICE_NAME = "PREFS_DEVICE_NAME";

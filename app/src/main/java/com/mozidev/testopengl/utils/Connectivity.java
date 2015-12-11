@@ -196,8 +196,8 @@ public class Connectivity {
     }
 
 
-    public static int getWIFIStrangth(Context context) {
-        return PrefUtils.getWIFIStrangth(context);
+    public static int getWIFIStrength(Context context) {
+        return PrefUtils.getWIFIStrength(context);
     }
 
 

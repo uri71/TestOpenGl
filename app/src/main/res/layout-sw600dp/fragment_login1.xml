@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/login_background_without_icon">
+
+ <!--   <LinearLayout
+        android:id="@+id/login_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginLeft="160dp"
+        android:layout_marginRight="160dp"
+        android:padding="8dp">-->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="256dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/login_logo"/>
+
+
+
+
+
+        <TextView
+            android:id="@+id/tv_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/et_container"
+            android:gravity="center"
+            android:text="Sign in to your account"
+            android:textSize="36sp"
+            android:textColor="@color/colorLoginText"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+
+
+        <LinearLayout
+                android:id="@+id/et_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginRight="160dp"
+                android:layout_above="@+id/send"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/edit_text"
+                android:orientation="vertical"
+            android:layout_marginBottom="64dp">
+
+                <EditText
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:hint="Enter Site I.D."
+                    android:imeOptions="actionNext"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:singleLine="true"
+                    android:textSize="36sp"
+                    android:textColorHint="@color/colorLoginText"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorDownloadAlertStroke"/>
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:hint="Password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:singleLine="true"
+                    android:textSize="36sp"
+                    android:textColorHint="@color/colorLoginText" />
+            </LinearLayout>
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_signin_selector"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"
+            android:text="Sign in"
+            android:textAllCaps="true"
+            android:textSize="36sp"
+            android:textColor="@color/colorLoginButtonText"
+            android:textStyle="bold"/>
+
+   <!-- </LinearLayout>-->
+
+    <include layout="@layout/view_login_checking_progress"
+        />
+
+    <ImageView
+    android:id="@+id/iv_alert"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_centerInParent="true"
+    android:src="@drawable/login_invalid_license_alert"
+    android:visibility="gone"/>
+</RelativeLayout>

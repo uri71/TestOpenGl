@@ -41,24 +41,24 @@ public class PrefUtils {
     }
 
 
-    public static void setSoketUrl(Context context, String url){
+    public static void setSocketUrl(Context context, String url){
         context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                 .edit().putString(Constants.PREFS_SOCKET_URL, url).commit();
     }
 
 
-    public static String getSoketUrl (Context context){
+    public static String getSocketUrl (Context context){
         return context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                 .getString(Constants.PREFS_SOCKET_URL, "");
     }
 
 
-    public static void setWIFIStrangth(Context context, int signalStrangth) {
+    public static void setWIFIStrength(Context context, int signalStrangth) {
         context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                 .edit().putInt(Constants.PREFS_WIFI_STRENGTH, signalStrangth).commit();
     }
 
-    public static int getWIFIStrangth(Context context) {
+    public static int getWIFIStrength(Context context) {
         return context.getApplicationContext().getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                 .getInt(Constants.PREFS_WIFI_STRENGTH, 0);
     }

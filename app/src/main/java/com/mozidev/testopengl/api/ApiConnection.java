@@ -2,8 +2,6 @@ package com.mozidev.testopengl.api;
 
 import com.squareup.okhttp.ResponseBody;
 
-import org.json.JSONObject;
-
 import java.util.Map;
 
 import retrofit.Call;

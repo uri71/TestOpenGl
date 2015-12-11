@@ -3,7 +3,6 @@ package com.mozidev.testopengl.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,38 +19,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.mozidev.testopengl.Constants;
 import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.api.ApiHelper;
 import com.mozidev.testopengl.api.LoginResponseWrapper;
-import com.mozidev.testopengl.network.BusEvent;
-import com.mozidev.testopengl.network.JsonField;
 import com.mozidev.testopengl.network.Message;
-import com.mozidev.testopengl.table.WorkLog;
 import com.mozidev.testopengl.utils.Connectivity;
 import com.mozidev.testopengl.utils.PrefUtils;
-import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.squareup.okhttp.ResponseBody;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -136,7 +123,6 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
     @OnClick(R.id.send)
     public void send() {
         hideKeyboard();
-        showProgressView(true, false, null);
         if (Connectivity.isConnected(getActivity())) {
             sendUserData();
         } else {
@@ -155,14 +141,17 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
                 try {
                     String json = response.body().string();
                     Log.d(TAG, json);
-                    wrapper = gson.fromJson(json, LoginResponseWrapper.class);
-
+                        wrapper = gson.fromJson(json, LoginResponseWrapper.class);
                         if (!wrapper.isError) {
-                            PrefUtils.setSoketUrl(getContext(), wrapper.data.socketUrl);
-                            Log.d(TAG, wrapper.data.socketUrl);
+                            PrefUtils.setSocketUrl(getContext(), wrapper.data.socketUrl);
+                            Log.d(TAG, "Socket URL: " + wrapper.data.socketUrl);
                             PrefUtils.setToken(getContext(), wrapper.data.authToken);
-                            Log.d(TAG, wrapper.data.authToken);
+                            Log.d(TAG, "Token: " + wrapper.data.authToken);
                             showProgressView(false, true, null);
+                        } else {
+                            Log.d(TAG, wrapper.errorMessage);
+                            showProgressView(false, false, wrapper.errorMessage);
+
                         }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -172,7 +161,6 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.getMessage());
-                showProgressView(false, false, t.getMessage());
             }
         }, getActivity(), login.getText().toString(), password.getText().toString());
     }

@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.*;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.mozidev.testopengl.Constants;
 import com.mozidev.testopengl.R;
@@ -12,6 +13,7 @@ import com.mozidev.testopengl.R;
 public class SocketService extends Service {
 
 
+    private  final String TAG = getClass().getSimpleName();
     private ServiceHandler mServiceHandler;
     private Looper mServiceLooper;
 
@@ -30,6 +32,7 @@ public class SocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate");
         HandlerThread thread = new HandlerThread("SocketConnection",
                 android.os.Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
@@ -41,12 +44,14 @@ public class SocketService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
         return Service.START_NOT_STICKY;
     }
 
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy");
         stopForeground(true);
         mServiceHandler.getConnection().destroy();
         super.onDestroy();

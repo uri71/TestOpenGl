@@ -47,8 +47,8 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-cognito:2.2.4'
     compile 'com.amazonaws:aws-android-sdk-s3:2.2.4'
     compile 'com.google.code.gson:gson:2.4'
-    compile 'io.socket:socket.io-client:0.6.1'
-    compile 'io.socket:engine.io-client:0.6.1'
+    compile 'io.socket:socket.io-client:0.6.2'
+    compile 'io.socket:engine.io-client:0.6.2'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile files('libs/androidquery-0.26.9.jar')
 }

@@ -15,7 +15,7 @@ import com.squareup.okhttp.OkHttpClient;
 /**
  * Created by y.storchak on 09.12.15.
  */
-public class MappingApplication extends Application{
+public class MappingApplication extends com.activeandroid.app.Application{
     private final String TAG = "DisplayMapper";
     private static MappingApplication instatnce;
     private TypefaceCollection mTypefaceCollection;
@@ -30,7 +30,7 @@ public class MappingApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        ActiveAndroid.initialize(this, BuildConfig.DEBUG);
+       // ActiveAndroid.initialize(this, BuildConfig.DEBUG);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))

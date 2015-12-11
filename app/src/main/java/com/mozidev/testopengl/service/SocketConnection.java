@@ -1,9 +1,11 @@
 package com.mozidev.testopengl.service;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mozidev.testopengl.Constants;
+import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.network.JsonField;
 import com.mozidev.testopengl.network.SocketEvent;
@@ -40,14 +42,22 @@ public class SocketConnection {
         connect();
     }
 
+    public void onEventAsync(BusEvent event) {
+        Log.d(TAG, event.command);
+        switch (event.command) {
+        }
+
+    }
 
     public void connect(){
+        Log.d(TAG, "connect()");
 
         IO.Options options = new IO.Options();
         options.forceNew = true;
         options.reconnection = true;
         String uri = "http://54.229.188.255/";//// TODO: 09.12.15
-        if (token.isEmpty()) {
+
+        if (TextUtils.isEmpty(token)) {
             token = PrefUtils.getToken(mContext);
             if (token.isEmpty()) {
                 // TODO: 04.08.15 PROCESS EMPTY TOKEN
@@ -69,7 +79,7 @@ public class SocketConnection {
 
                 socketConnect();
             }
-        }).on(SocketEvent.authenticated, new Emitter.Listener() {
+        })/*.on(SocketEvent.authenticated, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
@@ -92,15 +102,15 @@ public class SocketConnection {
 
                 Log.d(TAG, "SOCKET_AUTHENTICATED: auzToken = " + socketToken);
                 try {
-                    /*WorkLog log = new WorkLog(new Date().getTime(), "connect to socket and authenticated successful ");
-                    log.save();*/
+                    *//*WorkLog log = new WorkLog(new Date().getTime(), "connect to socket and authenticated successful ");
+                    log.save();*//*
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-        }).on(SocketEvent.command, new Emitter.Listener() {
+        })*/.on(SocketEvent.command, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
@@ -258,7 +268,9 @@ public class SocketConnection {
 
         try {
             JSONObject object = JsonUtils.getSocketAuthJson(mContext, token);
-            if(object != null)socket.emit(SocketEvent.authenticate, object);
+            if(object != null){
+                socket.emit(SocketEvent.BACK_connect, object);
+            }
             Log.d(TAG, "socketConnect auth json = " + object.toString());
         }
         catch (JSONException e) {

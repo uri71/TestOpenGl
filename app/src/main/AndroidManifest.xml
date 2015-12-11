@@ -65,7 +65,7 @@
 
         <service
             android:name=".service.SocketService"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="false" >
         </service>
 

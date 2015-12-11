@@ -179,6 +179,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
             public void callback(String url, JSONObject json, AjaxStatus status) {
                 if (json != null) {
                     Log.d(TAG, json.toString());
+
                     JSONObject data = json.optJSONObject(JsonField.data);
                     boolean isError = json.optBoolean(JsonField.isError);
                     if (data != null && !data.isNull(JsonField.newDevice)) {
@@ -195,23 +196,23 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
                         PrefUtils.setToken(getActivity(), authToken);
                         PrefUtils.setSoketUrl(getActivity(), socketUrl);
                         //  DisplayMapper.getSocketService().connect();
-                        EventBus.getDefault().post(new BusEvent(null, EventsCommand.CONNECT));
-                        DisplayMapper.getInstance().connectKioskSocket();
+                        //EventBus.getDefault().post(new BusEvent(null, EventsCommand.CONNECT));
+                        //DisplayMapper.getInstance().connectKioskSocket();
                         Log.d(TAG, "token obtain" + authToken);
-                        WorkLog log = new WorkLog(new Date().getTime(), "login to server successful ");
-                        log.save();
+                       /* WorkLog log = new WorkLog(new Date().getTime(), "login to server successful ");
+                        log.save();*/
                         showProgressView(false, true, null);
                     } else if (isError) {
                         showProgressView(false, false, message);
                         Log.e(TAG, "ERROR authentication");
-                        WorkLog log = new WorkLog(new Date().getTime(), "login to server fail " + message);
-                        log.save();
+                       /* WorkLog log = new WorkLog(new Date().getTime(), "login to server fail " + message);
+                        log.save();*/
                     }
                 } else {
-                    showProgressView(false, false, null);
+                  /*  showProgressView(false, false, null);
                     Log.e(TAG, "ERROR ajax");
                     WorkLog log = new WorkLog(new Date().getTime(), "login to server fail ajax error");
-                    log.save();
+                    log.save();*/
                 }
             }
         });
@@ -367,6 +368,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
 
 
     private void changeProgress() {
+        if(getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

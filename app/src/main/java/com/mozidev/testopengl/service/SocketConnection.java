@@ -65,9 +65,9 @@ public class SocketConnection {
         IO.Options options = new IO.Options();
         options.forceNew = true;
         options.reconnection = true;
-        options.timeout = 60000;
-        options.reconnectionDelay = 1000;
-        String uri = PrefUtils.getSoketUrl(mContext);//// TODO: 09.12.15
+        /*options.timeout = 60000;
+        options.reconnectionDelay = 1000;*/
+        String uri = PrefUtils.getSocketUrl(mContext);//// TODO: 09.12.15
         Log.d(TAG, "socket uri = " + uri);
 
         if (TextUtils.isEmpty(token)) {
@@ -89,10 +89,10 @@ public class SocketConnection {
             public void call(Object... args) {
 
                 Log.d(TAG, "SOCKET_CONNECT");
-                socket.emit(SocketEvent.BACK_connect);
+                socket.emit(SocketEvent.BACK_connect, new JSONObject());
                 //socketConnect();
             }
-        })/*.on(SocketEvent.authenticated, new Emitter.Listener() {
+        }).on(SocketEvent.authenticated, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
@@ -108,22 +108,22 @@ public class SocketConnection {
                 JSONObject answer = (JSONObject) args[0];
 
                 socketToken = answer.optString(JsonField.auzToken);
-                mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
+               /* mContext.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                         .edit()
                         .putString(Constants.PREFS_TOKEN_TEMP, socketToken)
-                        .commit();
+                        .commit();*/
 
                 Log.d(TAG, "SOCKET_AUTHENTICATED: auzToken = " + socketToken);
                 try {
-                    *//*WorkLog log = new WorkLog(new Date().getTime(), "connect to socket and authenticated successful ");
-                    log.save();*//*
+                   /* WorkLog log = new WorkLog(new Date().getTime(), "connect to socket and authenticated successful ");
+                    log.save();*/
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-        })*/.on(SocketEvent.command, new Emitter.Listener() {
+        }).on(SocketEvent.command, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {

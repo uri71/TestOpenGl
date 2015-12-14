@@ -122,6 +122,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
     @SuppressWarnings("unused")
     @OnClick(R.id.send)
     public void send() {
+        send.setEnabled(false);
         hideKeyboard();
         if (Connectivity.isConnected(getActivity())) {
             sendUserData();
@@ -262,7 +263,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
+                    send.setEnabled(true);
                     if(success){
 
                         getActivity()
@@ -294,7 +295,7 @@ public class LoginFragment extends BaseFragment implements TextView.OnEditorActi
 
 
     private void showLoginScreen(boolean b) {
-        int visible = b? View.VISIBLE: View.GONE;
+        int visible = b ? View.VISIBLE : View.GONE;
         login_container.setVisibility(visible);
         tv_log.setVisibility(visible);
         send.setVisibility(visible);

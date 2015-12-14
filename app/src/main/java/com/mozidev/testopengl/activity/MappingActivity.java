@@ -23,12 +23,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.mozidev.testopengl.ObjParser;
 import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
-import com.mozidev.testopengl.opengl.Base3DObject;
 import com.mozidev.testopengl.service.SocketService;
+import com.mozidev.testopengl.opengl.BaseObject;
+import com.mozidev.testopengl.utils.OBJUtils;
 import com.mozidev.testopengl.view.MyGLSurfaceView;
 
 import butterknife.Bind;
@@ -59,7 +59,7 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
 
     private MyGLSurfaceView mGLView;
 
-    private Base3DObject object;
+    private BaseObject object;
 
 
 
@@ -70,8 +70,8 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
         ButterKnife.bind(this);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-        ObjParser parser = new ObjParser();
-        object = parser.parse();
+
+        object = OBJUtils.parse();
 
         animation1 = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         animation2 = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
@@ -94,7 +94,6 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
         buttonSave.setOnClickListener(this);
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -103,13 +102,11 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         mGLView.onResume();
     }
-
 
     @Override
     public void onClick(View v) {

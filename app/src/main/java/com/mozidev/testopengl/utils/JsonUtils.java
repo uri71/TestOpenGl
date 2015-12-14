@@ -156,7 +156,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new MappingFinish(token, targetUdid, Command.mappingFinishGL));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getMappingFinishJson GSON" + s.toString());
-        return null;
+        Log.d(TAG, "getMappingFinishJson GSON" + js.toString());
+        return js;
     }
 }

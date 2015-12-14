@@ -134,5 +134,6 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 }

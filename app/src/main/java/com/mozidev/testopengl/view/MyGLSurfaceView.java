@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.activity.MappingActivity;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.opengl.Base3DObject;
@@ -101,6 +102,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                         @Override
                         public void run() {
                             Log.d(TAG, "MotionEvent.ACTION_DOWN hide marker");
+                            EventBus.getDefault()
+                                    .post(new BusEvent(Command.mappingUpdateGL, -1, 0, 0));
                             mRenderer.setLine(false, 0);
                             requestRender();
                         }
@@ -113,6 +116,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                         @Override
                         public void run() {
                             Log.d(TAG, "MotionEvent.ACTION_DOWN show marker");
+                            EventBus.getDefault()
+                                    .post(new BusEvent(Command.mappingUpdateGL, mObjects.selectedId, mObjects.points.get(mObjects.selectedId)[0], mObjects.points.get(mObjects.selectedId)[1]));
                             mRenderer.setLine(true, mObjects.selectedId);
                             requestRender();
                         }
@@ -132,6 +137,10 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                         queueEvent(new Runnable() {
                             @Override
                             public void run() {
+                                if (mObjects.selectedId >= 0) {
+                                    EventBus.getDefault()
+                                            .post(new BusEvent(Command.mappingUpdateGL, mObjects.selectedId, mObjects.points.get(mObjects.selectedId)[0], mObjects.points.get(mObjects.selectedId)[1]));
+                                }
                                 mRenderer.resetObject(mObjects);
                                 requestRender();
                             }
@@ -259,6 +268,10 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
         queueEvent(new Runnable() {
             @Override
             public void run() {
+                if (mObjects.selectedId >= 0) {
+                    EventBus.getDefault()
+                            .post(new BusEvent(Command.mappingUpdateGL, mObjects.selectedId, mObjects.points.get(mObjects.selectedId)[0], mObjects.points.get(mObjects.selectedId)[1]));
+                }
                 mRenderer.resetObject(mObjects);
                 requestRender();
             }
@@ -285,10 +298,11 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
 
 
     private void saveMapping() {
-       // mRenderer.stop();
+        // mRenderer.stop();
         EventBus.getDefault().post(new BusEvent(Command.mappingFinishGL));
         getContext().stopService(new Intent(this.getContext(), SocketService.class));
         new CreatorObjFile().create(getContext(), mObjects);
+        ((MappingActivity) getContext()).finish();
 
     }
 

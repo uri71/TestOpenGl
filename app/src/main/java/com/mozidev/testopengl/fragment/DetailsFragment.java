@@ -111,7 +111,7 @@ public class DetailsFragment extends BaseFragment {
             connect.setText("Disconnect");
         } else {
             getActivity().stopService(new Intent(getActivity(), SocketService.class));
-            connect.setText("Connect");
+            connect.setText("Connect to site");
         }
     }
 
@@ -135,6 +135,7 @@ public class DetailsFragment extends BaseFragment {
         super.onResume();
         receiver = new DownloadReceiver();
         getActivity().registerReceiver(receiver, new IntentFilter(Constants.INTENT_FILTER_DOWNLOAD));
+        connect.setText("Connect to site");
     }
 
 

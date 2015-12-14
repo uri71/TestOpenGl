@@ -256,8 +256,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if (object != null) {
             int selectedId = m3DObject.selectedId;
             m3DObject = object;
-            EventBus.getDefault()
-                    .post(new BusEvent(Command.mappingUpdateGL, selectedId, m3DObject.points.get(selectedId)[0], m3DObject.points.get(selectedId)[1]));
+
             addFigure();
             createMarkers();
             setLine(true, selectedId);

@@ -39,15 +39,6 @@ public class ApiHelper {
         connection.login(params).enqueue(callback);
     }
 
-    public static void checkPermissions(Callback<ResponseBody> callback, Context context){
-        sp = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        String udid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Map<String, String> params = new HashMap<>();
-        params.put(UDID_KEY, udid);
-        params.put(TOKEN_KEY, sp.getString(PREFS_TOKEN, ""));
-        connection.checkPermissions(params).enqueue(callback);
-    }
-
     public static void getDevList(Callback<ResponseBody> callback, Context context){
         String udid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         Map<String, String> params = new HashMap<>();

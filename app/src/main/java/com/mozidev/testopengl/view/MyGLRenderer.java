@@ -23,8 +23,7 @@ import android.util.Log;
 import com.google.common.collect.ImmutableList;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
-import com.mozidev.testopengl.network.SocketEvent;
-import com.mozidev.testopengl.opengl.Base3DObject;
+import com.mozidev.testopengl.opengl.BaseObject;
 import com.mozidev.testopengl.opengl.Figure;
 import com.mozidev.testopengl.opengl.Line;
 import com.mozidev.testopengl.opengl.Marker;
@@ -60,8 +59,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
 
-    private float mAngle;
-    private Base3DObject m3DObject;
+    private BaseObject mObject;
     private Line mLines;
     private float ratio;
 
@@ -82,7 +80,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 unused) {
         Log.d(TAG, "onDrawFrame");
-        float[] scratch = new float[16];
 
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -180,30 +177,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    /**
-     * Returns the rotation angle of the triangle shape (mTriangle).
-     *
-     * @return - A float representing the rotation angle.
-     */
-    public float getAngle() {
-        return mAngle;
-    }
-
-
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void setAngle(float angle) {
-        mAngle = angle;
-    }
-
-
     public void createFigure() {
-        if (m3DObject == null) {
-            Log.e(TAG, "m3DObject == null");
+        if (mObject == null) {
+            Log.e(TAG, "mObject == null");
             return;
         }
-        final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
+        final List<Figure> list = ImmutableList.copyOf(mObject.face);
 
         if (mSquare != null) {
             // mSquare.clear();
@@ -223,18 +202,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     public void addFigure() {
-        if (m3DObject == null) {
-            Log.e(TAG, "m3DObject == null");
+        if (mObject == null) {
+            Log.e(TAG, "mObject == null");
             return;
         }
-        final List<Figure> list = ImmutableList.copyOf(m3DObject.face);
+        final List<Figure> list = ImmutableList.copyOf(mObject.face);
 
         if (mSquare == null) {
             mSquare = new ArrayList<>();
         }
 
         for (Figure f : list) {
-            if (m3DObject.changedFigureId == list.indexOf(f)) {
+            if (mObject.changedFigureId == list.indexOf(f)) {
 
                 float[] vertex = new float[f.vertex.size()];
                 for (int i = 0; i < vertex.length - 1; i++) {
@@ -246,18 +225,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public void setObject(Base3DObject object) {
-        m3DObject = object;
+    public void setObject(BaseObject object) {
+        mObject = object;
     }
 
 
-    public void resetObject(final Base3DObject object) {
+    public void resetObject(final BaseObject object) {
         Log.d(TAG, "resetObject");
         if (object != null) {
-            int selectedId = m3DObject.selectedId;
-            m3DObject = object;
+            int selectedId = mObject.selectedId;
+            mObject = object;
             EventBus.getDefault()
-                    .post(new BusEvent(Command.mappingUpdateGL, selectedId, m3DObject.points.get(selectedId)[0], m3DObject.points.get(selectedId)[1]));
+                    .post(new BusEvent(Command.mappingUpdateGL, selectedId, mObject.points.get(selectedId)[0], mObject.points.get(selectedId)[1]));
             addFigure();
             createMarkers();
             setLine(true, selectedId);
@@ -266,8 +245,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     private void createMarkers() {
-        if (m3DObject == null) {
-            Log.e(TAG, "m3DObject == null");
+        if (mObject == null) {
+            Log.e(TAG, "mObject == null");
             return;
         }
         if (mMarker != null) {
@@ -276,7 +255,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mMarker = new ArrayList<>();
         }
 
-        List<Float[]> vertex = ImmutableList.copyOf(m3DObject.points);
+        List<Float[]> vertex = ImmutableList.copyOf(mObject.points);
         for (Float[] f : vertex) {
             Marker marker;
 
@@ -287,13 +266,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     public void setLine(boolean selected, int id) {
-        int selectedId = id;
-        Log.d(TAG, "setLine = " + selected + " id = " + selectedId);
-        if (selected && selectedId < 0) {
+        Log.d(TAG, "setLine = " + selected + " id = " + id);
+        if (selected && id < 0) {
             return;
         }
         if (selected) {
-            Float[] vertex = m3DObject.points.get(selectedId);
+            Float[] vertex = mObject.points.get(id);
             mLines = new Line(vertex, ratio);
         } else {
             mLines = null;

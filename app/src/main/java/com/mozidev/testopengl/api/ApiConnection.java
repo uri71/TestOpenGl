@@ -18,9 +18,6 @@ public interface ApiConnection {
     @POST("/api/login")
     Call<ResponseBody> login(@QueryMap Map<String, String> params);
 
-    @GET("/api/check")
-    Call<ResponseBody> checkPermissions(@QueryMap Map<String, String> params);
-
     @GET("/api/list")
     Call<ResponseBody> devList(@QueryMap Map<String, String> params);
 

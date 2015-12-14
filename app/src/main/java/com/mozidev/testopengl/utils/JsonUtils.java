@@ -5,7 +5,6 @@ package com.mozidev.testopengl.utils;
  */
 
 import android.content.Context;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -21,6 +20,8 @@ import com.mozidev.testopengl.model.MappingFinish;
 import com.mozidev.testopengl.model.MappingInit;
 import com.mozidev.testopengl.model.MappingUpdate;
 import com.mozidev.testopengl.network.Command;
+import com.mozidev.testopengl.opengl.BaseObject;
+import com.mozidev.testopengl.opengl.Figure;
 import com.mozidev.testopengl.table.Device;
 
 import org.json.JSONArray;
@@ -107,7 +108,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new AuthToken(token, targetUdid));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getSocketAuthJson GSON" + s.toString());
+        Log.d(TAG, "getSocketAuthJson GSON" + s);
         return js;
     }
 
@@ -118,7 +119,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new DeviceStatus(targetUdid, token, Command.deviceStatus, new DataDeviceStatus(udids)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getAllDeviceStatusJson GSON" + s.toString());
+        Log.d(TAG, "getAllDeviceStatusJson GSON" + s);
         return js;
     }
 
@@ -129,7 +130,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new DeviceStatus(targetUdid, token, Command.deviceStatus, new DataDeviceStatus(udids)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getDeviceStatusJson GSON" + s.toString());
+        Log.d(TAG, "getDeviceStatusJson GSON" + s);
         return js;
     }
 
@@ -138,7 +139,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new MappingInit(token, targetUdid, name, new DataMappingInit(url)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getMappingInitJson GSON" + s.toString());
+        Log.d(TAG, "getMappingInitJson GSON" + s);
         return js;
     }
 
@@ -147,7 +148,7 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new MappingUpdate(token, targetUdid, name, new DataMappingUpdate(v, x, y)));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getMappingUpdateJson GSON" + s.toString());
+        Log.d(TAG, "getMappingUpdateJson GSON" + s);
         return js;
     }
 
@@ -156,7 +157,33 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new MappingFinish(token, targetUdid, Command.mappingFinishGL));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getMappingFinishJson GSON" + s.toString());
+        Log.d(TAG, "getMappingFinishJson GSON" + s);
         return null;
     }
+
+    public static JSONObject objectToJson(BaseObject object) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonResolution = new JSONArray();
+        JSONObject jsonPoints = new JSONObject();
+        JSONObject jsonPrimitives = new JSONObject();
+        jsonResolution.put(1920);
+        jsonResolution.put(1080);
+        jsonObject.put("output_camera_resolution", jsonResolution);
+        int i = 0;
+        for (Figure figure : object.face){
+            jsonPrimitives.put(String.valueOf(i), new JSONArray().put(figure.order.get(0))
+                    .put(figure.order.get(1)).put(figure.order.get(2)).put(figure.order.get(3)));
+            i++;
+        }
+        jsonObject.put("prims", jsonPrimitives);
+        i = 0;
+        for (Float[] point : object.points){
+            jsonPoints.put(String.valueOf(i), new JSONArray().put(point[0]).put(point[1]));
+            i++;
+        }
+        jsonObject.put("points", jsonPoints);
+
+        return jsonObject;
+    }
+
 }

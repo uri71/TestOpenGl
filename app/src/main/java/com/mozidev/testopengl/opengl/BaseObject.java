@@ -7,55 +7,41 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by y.storchak on 30.11.15.
+ * Created by Igor
+ * on 14.12.2015
  */
-public class Base3DObject implements Cloneable {
+public class BaseObject {
 
-    private static final String TAG = "Base3DObject";
+    private static final String TAG = "BaseObject";
     public List<Float[]> points;
-    public List<float[]> texture;
-    public List<float[]> norm;
     public List<Figure> face;
     public List<String> order;
-    public String comment;
     public int selectedId = -1;
     public int changedFigureId = -1;
-    private String parsedFile;
 
-
-    public Base3DObject(final Base3DObject object) {
+    public BaseObject(final BaseObject object) {
         points = object.points;
-        norm = object.norm;
-        comment = object.comment;
-        texture = object.texture;
         order = object.order;
         selectedId = object.selectedId;
         recalculateFigure();
     }
 
-
     public int getSelectedId() {
         return selectedId;
     }
-
 
     public void setSelectedId(int selectedId) {
         this.selectedId = selectedId;
     }
 
-
     public void clearSelected() {
         selectedId = -1;
     }
 
-
-    public Base3DObject() {
+    public BaseObject() {
         this.points = new ArrayList<>();
-        this.texture = new ArrayList<>();
-        this.norm = new ArrayList<>();
         this.face = new ArrayList<>();
     }
-
 
     public void addV(String line) {
         String[] split = line.split(" ");
@@ -65,27 +51,6 @@ public class Base3DObject implements Cloneable {
         }
         points.add(v);
     }
-
-
-    public void addVt(String line) {
-        String[] split = line.split(" ");
-        float[] vt = new float[split.length - 1];
-        for (int i = 1; i < split.length; i++) {
-            vt[i - 1] = Float.parseFloat(split[i]);
-        }
-        texture.add(vt);
-    }
-
-
-    public void addVn(String line) {
-        String[] split = line.split(" ");
-        float[] vn = new float[split.length - 1];
-        for (int i = 1; i < split.length; i++) {
-            vn[i - 1] = Float.parseFloat(split[i]);
-        }
-        norm.add(vn);
-    }
-
 
     public void addF(String line) {
         String[] group = line.split(" ");
@@ -108,14 +73,12 @@ public class Base3DObject implements Cloneable {
         face.add(f);
     }
 
-
     public void recalculateFigure() {
         if (face == null) {
             face = new ArrayList<>();
         }
         resetF();
     }
-
 
     private void resetF() {
         if (selectedId >= 0) {
@@ -139,41 +102,11 @@ public class Base3DObject implements Cloneable {
         }
     }
 
-
     public void setOrder(String line) {
         if (order == null) {
             order = new ArrayList<>();
         }
         order.add(line);
     }
-
-
-    public void addComment(String line) {
-        this.comment = line;
-    }
-
-
-    @Override
-    public Base3DObject clone() {
-        try {
-            final Base3DObject result = (Base3DObject) super.clone();
-            // copy fields that need to be copied here!
-            return result;
-        }
-        catch (final CloneNotSupportedException ex) {
-            throw new AssertionError();
-        }
-    }
-
-
-    public void setParsedFile(String s) {
-        parsedFile = s;
-    }
-
-
-    public String getParsedFile() {
-        return parsedFile;
-    }
-
 
 }

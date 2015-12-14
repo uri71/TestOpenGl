@@ -30,7 +30,7 @@ import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
-import com.mozidev.testopengl.opengl.Base3DObject;
+import com.mozidev.testopengl.opengl.BaseObject;
 import com.mozidev.testopengl.service.SocketService;
 
 import de.greenrobot.event.EventBus;
@@ -45,7 +45,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
     private static final String TAG = "MyGLSurfaceView";
     private static final float SHIFT_STEP = 0.005f;
     private MyGLRenderer mRenderer = null;
-    private Base3DObject mObjects;
+    private BaseObject mObjects;
     private float res_x;
     private float res_y;
     private double DISTANCE;
@@ -61,7 +61,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
     }
 
 
-    public void init(Base3DObject object) {
+    public void init(BaseObject object) {
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
@@ -239,7 +239,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                 Log.d("OnClickListener", "button right clicked!");
                 break;
             case R.id.button_save:
-                Log.d("OnClickListener", "button right clicked!");
+                Log.d("OnClickListener", "button save clicked!");
                 showDialog();
                 return;
         }

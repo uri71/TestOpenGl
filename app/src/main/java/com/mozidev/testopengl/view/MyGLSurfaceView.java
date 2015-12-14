@@ -300,7 +300,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
     private void saveMapping() {
         // mRenderer.stop();
         EventBus.getDefault().post(new BusEvent(Command.mappingFinishGL));
-        getContext().stopService(new Intent(this.getContext(), SocketService.class));
+
         new CreatorObjFile().create(getContext(), mObjects);
         ((MappingActivity) getContext()).finish();
 

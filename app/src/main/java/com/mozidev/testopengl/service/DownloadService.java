@@ -46,7 +46,7 @@ public class DownloadService extends Service {
 
     private void startForeground() {
         Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("Test download obj file")
+                .setContentTitle("Test download json file")
                 .setSmallIcon(R.mipmap.ic_show)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .build();
@@ -60,7 +60,7 @@ public class DownloadService extends Service {
             String uri = intent.getStringExtra("url");
             DownloadManager manager = ((DownloadManager) getSystemService(DOWNLOAD_SERVICE));
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(uri));
-            Uri destinationUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "test.obj"));
+            Uri destinationUri = Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "map.json"));
             request.setDestinationUri(destinationUri);
             request.setVisibleInDownloadsUi(true);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);

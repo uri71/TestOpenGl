@@ -193,7 +193,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         for (Figure f : list) {
 
             float[] vertex = new float[f.vertex.size()];
-            for (int i = 0; i < vertex.length - 1; i++) {
+            for (int i = 0; i < vertex.length; i++) {
                 vertex[i] = f.vertex.get(i);
             }
             mSquare.add(list.indexOf(f), new Square(vertex));
@@ -216,7 +216,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             if (mObject.changedFigureId == list.indexOf(f)) {
 
                 float[] vertex = new float[f.vertex.size()];
-                for (int i = 0; i < vertex.length - 1; i++) {
+                for (int i = 0; i < vertex.length; i++) {
                     vertex[i] = f.vertex.get(i);
                 }
                 mSquare.set(list.indexOf(f), new Square(vertex));
@@ -234,12 +234,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Log.d(TAG, "resetObject");
         if (object != null) {
             int selectedId = mObject.selectedId;
-            mObject = object;
-            EventBus.getDefault()
-                    .post(new BusEvent(Command.mappingUpdateGL, selectedId, mObject.points.get(selectedId)[0], mObject.points.get(selectedId)[1]));
-            addFigure();
-            createMarkers();
-            setLine(true, selectedId);
+            if (selectedId != -1) {
+                mObject = object;
+                EventBus.getDefault()
+                        .post(new BusEvent(Command.mappingUpdateGL, selectedId, mObject.points.get(selectedId)[0], mObject.points.get(selectedId)[1]));
+                addFigure();
+                createMarkers();
+                setLine(true, selectedId);
+            }
         }
     }
 

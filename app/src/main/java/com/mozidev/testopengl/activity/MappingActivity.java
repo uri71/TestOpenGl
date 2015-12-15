@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.opengl.BaseObject;
-import com.mozidev.testopengl.utils.OBJUtils;
+import com.mozidev.testopengl.utils.JsonUtils;
 import com.mozidev.testopengl.view.MyGLSurfaceView;
 
 import butterknife.Bind;
@@ -66,7 +66,7 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
 
-        object = OBJUtils.parse();
+        object = JsonUtils.jsonToObject();
 
         animation1 = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         animation2 = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);

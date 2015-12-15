@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.mozidev.testopengl.opengl.BaseObject;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -34,7 +36,6 @@ public class OBJUtils {
         if(!file.exists()){
             Log.e(TAG, "file " + file.getPath() + " not exist");
         }
-        StringBuilder builder = new StringBuilder();
         BaseObject object = new BaseObject();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -54,7 +55,11 @@ public class OBJUtils {
         catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
-
+        try {
+            Log.d("Parsing", JsonUtils.objectToJson(object).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return object;
 
     }

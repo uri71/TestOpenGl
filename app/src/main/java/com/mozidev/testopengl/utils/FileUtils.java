@@ -20,7 +20,7 @@ public class FileUtils {
 
 
     public static boolean isFile() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "test.obj");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "map.json");
 
         if (!file.exists()) {
             return false;
@@ -33,7 +33,7 @@ public class FileUtils {
 
     public static void convertStringToFile(Context context,  String data) {
         File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File outDir = new File(root.getAbsolutePath() + File.separator + "mapped_file");
+        File outDir = new File(root.getAbsolutePath() + File.separator );
          Writer writer;
         if (!outDir.isDirectory()) {
             outDir.mkdir();
@@ -43,7 +43,7 @@ public class FileUtils {
                 throw new IOException(
                         "Unable to create directory EZ_time_tracker. Maybe the SD card is mounted?");
             }
-            String name = "mapped_file_"+ System.currentTimeMillis()+".obj";
+            String name = "mapped_file_"+ System.currentTimeMillis()+".json";
             File outputFile = new File(outDir, name);
             writer = new BufferedWriter(new FileWriter(outputFile));
             writer.write(data);

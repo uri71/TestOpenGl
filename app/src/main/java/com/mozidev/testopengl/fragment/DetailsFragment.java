@@ -98,7 +98,7 @@ public class DetailsFragment extends BaseFragment {
     @OnClick(R.id.btn_download)
     void download() {
         Intent intent = new Intent(getActivity(), DownloadService.class);
-        intent.putExtra("url", "http://www.ex.ua/get/210726622");
+        intent.putExtra("url", "http://www.ex.ua/get/213326857");
         getActivity().startService(intent);
         download.setEnabled(false);
     }

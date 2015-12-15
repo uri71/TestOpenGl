@@ -55,7 +55,6 @@ public class BaseObject {
     public void addF(String line) {
         String[] group = line.split(" ");
         Figure f = new Figure();
-        f.orderString = line;
         for (int i = 1; i < group.length; i++) {
             String[] elem = group[i].split("/");
             int p = Integer.valueOf(elem[0]);
@@ -83,11 +82,11 @@ public class BaseObject {
     private void resetF() {
         if (selectedId >= 0) {
             for (Figure f : face) {
-                if (f.order.contains(selectedId+1)) {
+                if (f.order.contains(selectedId)) {
                     f.vertex.clear();
                     for (int i : f.order) {
-                        f.vertex.addAll(Arrays.asList(points.get(i - 1)));
-                        Log.d(TAG, "reset figure selected id = " + selectedId + " order = " + f.orderString);
+                        f.vertex.addAll(Arrays.asList(points.get(i)));
+                        Log.d(TAG, "reset figure selected id = " + selectedId );
                         changedFigureId = face.indexOf(f);
                     }
                 }
@@ -96,7 +95,7 @@ public class BaseObject {
             for (Figure f : face) {
                 f.vertex.clear();
                 for (int i : f.order) {
-                    f.vertex.addAll(Arrays.asList(points.get(i - 1)));
+                    f.vertex.addAll(Arrays.asList(points.get(i)));
                 }
             }
         }

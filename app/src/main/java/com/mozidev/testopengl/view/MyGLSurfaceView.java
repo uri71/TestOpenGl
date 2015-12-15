@@ -26,12 +26,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mozidev.testopengl.CreatorObjFile;
 import com.mozidev.testopengl.R;
 import com.mozidev.testopengl.network.BusEvent;
 import com.mozidev.testopengl.network.Command;
 import com.mozidev.testopengl.opengl.BaseObject;
 import com.mozidev.testopengl.service.SocketService;
+import com.mozidev.testopengl.utils.FileUtils;
+import com.mozidev.testopengl.utils.JsonUtils;
+
+import org.json.JSONException;
 
 import de.greenrobot.event.EventBus;
 
@@ -128,7 +131,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
                     } else if (System.currentTimeMillis() - time > DELAY) {
                         time = System.currentTimeMillis();
                         checkTouchEvent(x, y);
-                        Log.d(TAG, "MotionEvent.ACTION_MOVE movie objects");
+                        Log.d(TAG, "MotionEvent.ACTION_MOVE move objects");
                         queueEvent(new Runnable() {
                             @Override
                             public void run() {
@@ -288,7 +291,11 @@ public class MyGLSurfaceView extends GLSurfaceView implements View.OnClickListen
        // mRenderer.stop();
         EventBus.getDefault().post(new BusEvent(Command.mappingFinishGL));
         getContext().stopService(new Intent(this.getContext(), SocketService.class));
-        new CreatorObjFile().create(getContext(), mObjects);
+        try {
+            FileUtils.convertStringToFile(getContext(), JsonUtils.objectToJson(mObjects).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

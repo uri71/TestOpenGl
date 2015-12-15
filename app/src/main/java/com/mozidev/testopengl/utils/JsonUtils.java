@@ -5,6 +5,7 @@ package com.mozidev.testopengl.utils;
  */
 
 import android.content.Context;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -28,7 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -171,19 +177,96 @@ public class JsonUtils {
         jsonObject.put("output_camera_resolution", jsonResolution);
         int i = 0;
         for (Figure figure : object.face){
-            jsonPrimitives.put(String.valueOf(i), new JSONArray().put(figure.order.get(0))
-                    .put(figure.order.get(1)).put(figure.order.get(2)).put(figure.order.get(3)));
+            JSONArray array = new JSONArray();
+            for (int x : figure.order) {
+                 array.put(x);
+            }
+            jsonPrimitives.put(String.valueOf(i), array);
             i++;
         }
         jsonObject.put("prims", jsonPrimitives);
         i = 0;
         for (Float[] point : object.points){
-            jsonPoints.put(String.valueOf(i), new JSONArray().put(point[0]).put(point[1]));
+            JSONArray array = new JSONArray();
+            int j = 0;
+            for (double y : point) {
+                if (j != 2) {
+                    array.put(y);
+                    j++;
+                }
+            }
+            jsonPoints.put(String.valueOf(i), array);
             i++;
         }
         jsonObject.put("points", jsonPoints);
 
         return jsonObject;
+    }
+
+    public static BaseObject jsonToObject(){
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "map.json");
+        if(!file.exists()){
+            Log.e(TAG, "file " + file.getPath() + " not exist");
+        }
+        BaseObject object = new BaseObject();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+                Log.d(TAG, line);
+            }
+            br.close();
+
+            JSONObject json = new JSONObject(builder.toString());
+            if (json.has("points")){
+                JSONObject obj = (JSONObject) json.opt("points");
+                for (int i = 0; i < obj.length(); i++ ){
+                    JSONArray array;
+                    if (obj.has(String.valueOf(i))){
+                        array = (JSONArray) obj.get(String.valueOf(i));
+                        ArrayList<Float> floats = new ArrayList<>();
+                        for (int g = 0; g < array.length(); g++) {
+                            if (!array.isNull(g)) {
+                                floats.add((Float)(((Double) array.getDouble(g)).floatValue()));
+                            }
+                        }
+                        floats.add((float) 0);
+                        Float[] a = new Float[floats.size()];
+                        floats.toArray(a);
+                        object.points.add(a);
+                    } else break;
+                }
+            }
+            if (json.has("prims")){
+                JSONObject obj = (JSONObject) json.opt("prims");
+                for (int i = 0; i < obj.length(); i++ ){
+                    JSONArray array;
+                    if (obj.has(String.valueOf(i))){
+                        array = (JSONArray) obj.get(String.valueOf(i));
+                        Figure f = new Figure();
+                        for (int g = 0; g < array.length(); g++) {
+                            f.order.add(array.getInt(g));
+                            Float[] arr = object.points.get(array.getInt(g));
+                            f.vertex.addAll(Arrays.asList(arr));
+                        }
+                        object.face.add(f);
+                    } else break;
+                }
+            }
+//            if (json.has("output_camera_resolution")){
+//                JSONArray array = (JSONArray) json.opt("output_camera_resolution");
+//            }
+
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return object;
     }
 
 }

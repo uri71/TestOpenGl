@@ -15,6 +15,7 @@
  */
 package com.mozidev.testopengl.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,12 +24,16 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.mozidev.testopengl.R;
+import com.mozidev.testopengl.network.BusEvent;
+import com.mozidev.testopengl.network.Command;
+import com.mozidev.testopengl.service.SocketService;
 import com.mozidev.testopengl.opengl.BaseObject;
 import com.mozidev.testopengl.utils.JsonUtils;
 import com.mozidev.testopengl.view.MyGLSurfaceView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class MappingActivity extends BaseActivity implements View.OnClickListener {
 
@@ -131,5 +136,8 @@ public class MappingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().post(new BusEvent(Command.mappingFinishGL));
+        stopService(new Intent(this, SocketService.class));
+
     }
 }

@@ -233,6 +233,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void resetObject(final BaseObject object) {
         Log.d(TAG, "resetObject");
         if (object != null) {
+
             int selectedId = mObject.selectedId;
             if (selectedId != -1) {
                 mObject = object;

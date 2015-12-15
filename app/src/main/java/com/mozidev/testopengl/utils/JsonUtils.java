@@ -163,8 +163,9 @@ public class JsonUtils {
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(new MappingFinish(token, targetUdid, Command.mappingFinishGL));
         JSONObject js =  new JSONObject(s);
-        Log.d(TAG, "getMappingFinishJson GSON" + s);
-        return null;
+        Log.d(TAG, "getMappingFinishJson GSON" + js.toString());
+        return js;
+
     }
 
     public static JSONObject objectToJson(BaseObject object) throws JSONException {
